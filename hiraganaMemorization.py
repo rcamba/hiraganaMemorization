@@ -83,9 +83,8 @@ def increaseErrorCount(error):
 	ErrorList.writeLog(mistakesLog, eList)
 
 	
-def handleUserInput(master, imgFileList, wordFileDict):
+def handleUserInput(master, canvas, imgFileList, wordFileDict):
 	
-	global canvas
 	global inputBox
 	global inputLabel
 	global textFrame
@@ -109,12 +108,8 @@ def handleUserInput(master, imgFileList, wordFileDict):
 		
 		createWord(imgFileList,wordFileDict)
 		
-		canvas_width=len(wordFileDict.keys())*100
-		canvas_height=100
-		canvas = Canvas(master, width=canvas_width, height=canvas_height)
-		
-		drawSyllables(master, wordFileDict)
-		(inputLabel, inputBox)=drawInputBox(master,  imgFileList, wordFileDict)
+		canvas=drawSyllables(master, canvas, wordFileDict)
+		(inputLabel, inputBox)=drawInputBox(master,  canvas, imgFileList, wordFileDict)
 		
 		
 		userInput=inputBox.get()
@@ -138,12 +133,14 @@ def createWord(imgFileList, wordFileDict):
 	
 	
 imgHolder=[]
-def drawSyllables(master, wordFileDict):
+def drawSyllables(master, canvas, wordFileDict):
 	global imgHolder
-	global canvas
+	
 	startWidth=0
+	canvas_width=len(wordFileDict.keys())*100
+	canvas_height=100
 	
-	
+	canvas = Canvas(master, width=canvas_width, height=canvas_height)
 	for key in wordFileDict.keys()[:]:
 		fileName=wordFileDict[key]
 		
@@ -157,9 +154,11 @@ def drawSyllables(master, wordFileDict):
 		startWidth+=imageFile.size[0]
 		
 	canvas.pack()
+	
+	return canvas
 
 
-def drawInputBox(master, imgFileList, wordFileDict):
+def drawInputBox(master, canvas, imgFileList, wordFileDict):
 	global inputBox
 	global inputLabel
 	global textFrame
@@ -177,7 +176,7 @@ def drawInputBox(master, imgFileList, wordFileDict):
 	
 	inputBox.focus_force()
 
-	inputBox.bind("<Return>", lambda func:handleUserInput(master,imgFileList,wordFileDict) )
+	inputBox.bind("<Return>", lambda func:handleUserInput(master, canvas,imgFileList,wordFileDict) )
 	
 	
 	inputBox.pack()
@@ -218,7 +217,7 @@ def main():
 	master["padx"] = 20
 	master["pady"] = 20 
 	
-	global canvas
+	
 	global inputBox
 	global inputLabel
 	global textFrame	
@@ -228,12 +227,10 @@ def main():
 	wordFileDict={}
 	createWord(imgFileList, wordFileDict)
 	
-	canvas_width=len(wordFileDict.keys())*100
-	canvas_height=100
 	
-	canvas = Canvas(master, width=canvas_width, height=canvas_height)
-	drawSyllables(master, wordFileDict)
-	(inputLabel, inputBox)=drawInputBox(master,  imgFileList, wordFileDict)
+	canvas=None
+	canvas=drawSyllables(master,  canvas, wordFileDict)
+	(inputLabel, inputBox)=drawInputBox(master,  canvas, imgFileList, wordFileDict)
 	
 	
 	mainloop()
@@ -241,7 +238,7 @@ def main():
 	
 if __name__ == "__main__":
 	#globals
-	canvas=None
+	
 	inputBox=None
 	inputLabel= None
 	textFrame=None
