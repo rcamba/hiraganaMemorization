@@ -82,9 +82,13 @@ def increaseErrorCount(error):
 	
 	ErrorList.writeLog(mistakesLog, eList)
 
-
+prevCanvas=None
+deletePrev=False
 def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList, wordFileDict):
 	
+	global prevCanvas
+	global canvasCount
+	global deletePrev
 	
 	userInput=inputBox.get()
 	
@@ -98,8 +102,22 @@ def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList
 		else:
 			print "Wrong. Answer is: ", correctAns
 		
+		
+		if deletePrev==False:
+			deletePrev=True
+			if prevCanvas!=None:
+				prevCanvas=canvas
+				canvas.destroy()
+			else:
+				prevCanvas=canvas
+			
+		
+		elif deletePrev==True:
+			prevCanvas.destroy()
+			prevCanvas=canvas
+			
 		textFrame.destroy()
-		canvas.destroy()
+		
 		inputLabel.destroy()
 		inputBox.destroy()
 		
@@ -109,7 +127,9 @@ def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList
 		(inputLabel, inputBox)=drawInputBox(master,  canvas, textFrame, inputBox, inputLabel, imgFileList, wordFileDict)
 		
 		userInput=inputBox.get()
-
+	
+	else:
+		master.destroy()
 
 def createWord(imgFileList, wordFileDict):
 	
