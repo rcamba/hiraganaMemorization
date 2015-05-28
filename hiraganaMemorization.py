@@ -83,7 +83,7 @@ def increaseErrorCount(error):
 	ErrorList.writeLog(mistakesLog, eList)
 
 	
-def handleUserInput(master, imgFileList):
+def handleUserInput(master, imgFileList, wordFileDict):
 	
 	global canvas
 	global inputBox
@@ -107,21 +107,21 @@ def handleUserInput(master, imgFileList):
 		inputLabel.destroy()
 		inputBox.destroy()
 		
-		createWord(imgFileList)
+		createWord(imgFileList,wordFileDict)
 		
 		canvas_width=len(wordFileDict.keys())*100
 		canvas_height=100
 		canvas = Canvas(master, width=canvas_width, height=canvas_height)
 		
 		drawSyllables(master, wordFileDict)
-		(inputLabel, inputBox)=drawInputBox(master,  imgFileList)
+		(inputLabel, inputBox)=drawInputBox(master,  imgFileList, wordFileDict)
 		
 		
 		userInput=inputBox.get()
 
 
-def createWord(imgFileList):
-	global wordFileDict
+def createWord(imgFileList, wordFileDict):
+	
 	wordFileDict.clear()
 	
 	i=0
@@ -159,7 +159,7 @@ def drawSyllables(master, wordFileDict):
 	canvas.pack()
 
 
-def drawInputBox(master, imgFileList):
+def drawInputBox(master, imgFileList, wordFileDict):
 	global inputBox
 	global inputLabel
 	global textFrame
@@ -177,7 +177,7 @@ def drawInputBox(master, imgFileList):
 	
 	inputBox.focus_force()
 
-	inputBox.bind("<Return>", lambda func:handleUserInput(master,imgFileList) )
+	inputBox.bind("<Return>", lambda func:handleUserInput(master,imgFileList,wordFileDict) )
 	
 	
 	inputBox.pack()
@@ -222,17 +222,18 @@ def main():
 	global inputBox
 	global inputLabel
 	global textFrame	
-	global wordFileDict
+	
 	
 	imgFileList=listdir(SYLLABLE_LIST_DIR)
-	createWord(imgFileList)
+	wordFileDict={}
+	createWord(imgFileList, wordFileDict)
 	
 	canvas_width=len(wordFileDict.keys())*100
 	canvas_height=100
 	
 	canvas = Canvas(master, width=canvas_width, height=canvas_height)
 	drawSyllables(master, wordFileDict)
-	(inputLabel, inputBox)=drawInputBox(master,  imgFileList)
+	(inputLabel, inputBox)=drawInputBox(master,  imgFileList, wordFileDict)
 	
 	
 	mainloop()
@@ -243,7 +244,6 @@ if __name__ == "__main__":
 	canvas=None
 	inputBox=None
 	inputLabel= None
-	wordFileDict={}
 	textFrame=None
 	
 	
