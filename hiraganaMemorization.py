@@ -82,12 +82,9 @@ def increaseErrorCount(error):
 	
 	ErrorList.writeLog(mistakesLog, eList)
 
+
+def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList, wordFileDict):
 	
-def handleUserInput(master, canvas, imgFileList, wordFileDict):
-	
-	global inputBox
-	global inputLabel
-	global textFrame
 	
 	userInput=inputBox.get()
 	
@@ -109,8 +106,7 @@ def handleUserInput(master, canvas, imgFileList, wordFileDict):
 		createWord(imgFileList,wordFileDict)
 		
 		canvas=drawSyllables(master, canvas, wordFileDict)
-		(inputLabel, inputBox)=drawInputBox(master,  canvas, imgFileList, wordFileDict)
-		
+		(inputLabel, inputBox)=drawInputBox(master,  canvas, textFrame, inputBox, inputLabel, imgFileList, wordFileDict)
 		
 		userInput=inputBox.get()
 
@@ -146,8 +142,7 @@ def drawSyllables(master, canvas, wordFileDict):
 		
 		filePath=SYLLABLE_LIST_DIR+"\\"+ fileName
 		imageFile=Image.open( filePath ) 
-		ii=ImageTk.PhotoImage( imageFile)
-		imgHolder.append( ii )
+		imgHolder.append(  ImageTk.PhotoImage( imageFile) )
 		#store because PhotoImage copy issues; "wrapper for their copy() method is botched"
 		
 		canvas.create_image(startWidth, 0, anchor=NW,  image=imgHolder[len(imgHolder)-1])
@@ -158,10 +153,8 @@ def drawSyllables(master, canvas, wordFileDict):
 	return canvas
 
 
-def drawInputBox(master, canvas, imgFileList, wordFileDict):
-	global inputBox
-	global inputLabel
-	global textFrame
+def drawInputBox(master, canvas, textFrame, inputBox, inputLabel,  imgFileList, wordFileDict):
+	
 	#Create a Label in textFrame
 	
 	textFrame= Frame(master)
@@ -176,7 +169,7 @@ def drawInputBox(master, canvas, imgFileList, wordFileDict):
 	
 	inputBox.focus_force()
 
-	inputBox.bind("<Return>", lambda func:handleUserInput(master, canvas,imgFileList,wordFileDict) )
+	inputBox.bind("<Return>", lambda func:handleUserInput(master, canvas, textFrame,  inputBox, inputLabel, imgFileList, wordFileDict) )
 	
 	
 	inputBox.pack()
@@ -217,33 +210,23 @@ def main():
 	master["padx"] = 20
 	master["pady"] = 20 
 	
-	
-	global inputBox
-	global inputLabel
-	global textFrame	
-	
+	wordFileDict={}
+	textFrame=None
+	inputBox=None
+	inputLabel=None
 	
 	imgFileList=listdir(SYLLABLE_LIST_DIR)
-	wordFileDict={}
 	createWord(imgFileList, wordFileDict)
-	
 	
 	canvas=None
 	canvas=drawSyllables(master,  canvas, wordFileDict)
-	(inputLabel, inputBox)=drawInputBox(master,  canvas, imgFileList, wordFileDict)
+	(inputLabel, inputBox)=drawInputBox(master,  canvas, textFrame, inputBox, inputLabel, imgFileList, wordFileDict)
 	
 	
 	mainloop()
 	
 	
 if __name__ == "__main__":
-	#globals
-	
-	inputBox=None
-	inputLabel= None
-	textFrame=None
-	
-	
 	
 	SYLLABLE_LIST_DIR="symImg"
 	mistakesLog="mistakes.log"
