@@ -83,46 +83,50 @@ def increaseErrorCount(error):
 	ErrorList.writeLog(mistakesLog, eList)
 
 	
-
-def handleUserInput(master,inputBox, correctAns):
+def handleUserInput(master, imgFileList):
 	
-	global numCorrect
-	global numWrong
+	global canvas
+	global inputBox
+	global inputLabel
+	global textFrame
 	
-	if ( inputBox.get()=="quit"):
-		#if numCorrect>0:
-			#print "Score : ", (numCorrect/(numCorrect+numWrong*1.0))*100, " %"
-		master.destroy()
-		#exit()
+	userInput=inputBox.get()
 	
-	else:
-		userAns=inputBox.get()
-		print userAns
-		if(userAns.lower()==correctAns):
-			print "Correct answer!"
-			numCorrect=numCorrect+1
-			master.destroy()
-			
-			master=Tk()
-			imgFileList=listdir(SYLLABLE_LIST_DIR)
-			runQuiz(master,imgFileList)
-			#system("testImageDisplay.py")
-			#Thread(target=system,args=("testImageDisplay.py",)).start()
-			
-			
+	if userInput!="quit":	
+		print userInput
+		
+		correctAns= " ".join(  wordFileDict.keys() )
+		if correctAns==userInput:
+			print "Correct"
+		
 		else:
-			print "Wrong answer! Correct answer: " + correctAns
-			numWrong=numWrong+1
-			#createLog(userAns)
-			inputBox.delete(0, END)#Tkinter.END
+			print "Wrong. Answer is: ", correctAns
+		
+		textFrame.destroy()
+		canvas.destroy()
+		inputLabel.destroy()
+		inputBox.destroy()
+		
+		createWord(imgFileList)
+		
+		canvas_width=len(wordFileDict.keys())*100
+		canvas_height=100
+		canvas = Canvas(master, width=canvas_width, height=canvas_height)
+		
+		drawSyllables(master, wordFileDict)
+		(inputLabel, inputBox)=drawInputBox(master,  imgFileList)
+		
+		
+		userInput=inputBox.get()
 
 
 def createWord(imgFileList):
+	global wordFileDict
+	wordFileDict.clear()
 	
 	i=0
 	word=""
 	counter=randint(1,4)
-	wordFileDict={}
 	
 	while(i<counter):
 		randNum=randint(0,len(imgFileList)-1)
@@ -132,16 +136,12 @@ def createWord(imgFileList):
 		
 		i=i+1
 	
-	return wordFileDict
 	
-def displaySyllables(master, wordFileDict):
-	
-	
+imgHolder=[]
+def drawSyllables(master, wordFileDict):
+	global imgHolder
+	global canvas
 	startWidth=0
-	canvas_width=len(wordFileDict.keys())*100
-	canvas_height=100
-	
-	canvas = Canvas(master, width=canvas_width, height=canvas_height)
 	
 	
 	for key in wordFileDict.keys()[:]:
@@ -149,36 +149,23 @@ def displaySyllables(master, wordFileDict):
 		
 		filePath=SYLLABLE_LIST_DIR+"\\"+ fileName
 		imageFile=Image.open( filePath ) 
-		wordFileDict["storage_"+key]=ImageTk.PhotoImage( imageFile)
+		ii=ImageTk.PhotoImage( imageFile)
+		imgHolder.append( ii )
 		#store because PhotoImage copy issues; "wrapper for their copy() method is botched"
 		
-		canvas.create_image(startWidth, 0, anchor=NW,  image=wordFileDict["storage_"+key])
+		canvas.create_image(startWidth, 0, anchor=NW,  image=imgHolder[len(imgHolder)-1])
 		startWidth+=imageFile.size[0]
 		
 	canvas.pack()
-	
-	
-def runQuiz(master, imgFileList):
-	
-	
-	
-	wordFileDict=createWord(imgFileList)
-	tempDict=deepcopy(wordFileDict)#because ImageTk.PhotoImage is being a bitch
-	
-	displaySyllables(master, tempDict)
-	correctAns= " ".join(  wordFileDict.keys() )
-	addInputBox(master, correctAns)
-	
-	mainloop()
-	
-	
-	
 
-def addInputBox(master, correctAns):
-	
-	textFrame = Frame(master)
-	
+
+def drawInputBox(master, imgFileList):
+	global inputBox
+	global inputLabel
+	global textFrame
 	#Create a Label in textFrame
+	
+	textFrame= Frame(master)
 	inputLabel = Label(textFrame)
 	inputLabel["text"] = "Enter syllables:"
 	inputLabel.pack(side=LEFT)
@@ -190,11 +177,13 @@ def addInputBox(master, correctAns):
 	
 	inputBox.focus_force()
 
-	inputBox.bind("<Return>", lambda func:handleUserInput(master,inputBox,correctAns) )
+	inputBox.bind("<Return>", lambda func:handleUserInput(master,imgFileList) )
+	
 	
 	inputBox.pack()
 	textFrame.pack()
 	
+	return (inputLabel, inputBox)
 
 
 def createHistogram():
@@ -221,7 +210,6 @@ def getNumOfBars(num):
 	
 	return result
 
-	
 def main():
 	
 	master = Tk()
@@ -230,21 +218,39 @@ def main():
 	master["padx"] = 20
 	master["pady"] = 20 
 	
+	global canvas
+	global inputBox
+	global inputLabel
+	global textFrame	
+	global wordFileDict
+	
 	imgFileList=listdir(SYLLABLE_LIST_DIR)
-	runQuiz(master, imgFileList)
+	createWord(imgFileList)
+	
+	canvas_width=len(wordFileDict.keys())*100
+	canvas_height=100
+	
+	canvas = Canvas(master, width=canvas_width, height=canvas_height)
+	drawSyllables(master, wordFileDict)
+	(inputLabel, inputBox)=drawInputBox(master,  imgFileList)
+	
+	
+	mainloop()
 	
 	
 if __name__ == "__main__":
+	#globals
+	canvas=None
+	inputBox=None
+	inputLabel= None
+	wordFileDict={}
+	textFrame=None
+	
+	
 	
 	SYLLABLE_LIST_DIR="symImg"
 	mistakesLog="mistakes.log"
-	
-	inputBox=""
-	correctAns=""
 
-
-	numWrong=0	
-	numCorrect=0	
 	
 	if ("p" in argv):
 		createHistogram()
