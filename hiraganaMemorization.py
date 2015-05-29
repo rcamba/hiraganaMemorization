@@ -5,12 +5,12 @@ import tkMessageBox
 
 from copy import deepcopy
 from os import listdir, chdir, system, getcwd, path
-from random import randint
+from random import randint, choice as randChoice
 from time import sleep
 from threading import Thread
 from sys import argv 
-import functools
 
+from collections import OrderedDict
 
 """
 TODO: 
@@ -18,6 +18,35 @@ TODO:
 	create log to display which characters that I make mistakes on
 	input will now have to be separated in spaces to allow counting mistakes to create the log
 """
+
+wD={"ta-be-ma-su":"to eat", 
+"na-ra-i-ma-su":"to learn", 
+"wa-su-re-ma-su":"to forget", 
+"no-mi-ma-su":"to drink", 
+"ka-i-ma-su":"to buy", 
+"mi-ma-su":"to watch, look,see", 
+"mi-se-ma-su":"to show",
+"ka-ki-ma-su":"to write, draw, paint",
+"o-ku-ri-ma-su":"to send",
+"tsu-ku-ri-ma-su":"to make, produce, cook",
+"tsu-ka-i-ma-su":"to use",
+"i-ki-ma-su":"to go",
+"ki-ma-su":"to come",
+"ka-e-ri-ma-su":"to return",
+"a-ri-ma-su":"to have, be at, exist(inanimate object)",
+"i-ma-su":"to have, be at, exist(animate object)",
+"ha-na-shi-ma-su":"to talk, speak",
+"ya-ku-shi-ma-su":"to translate",
+"ne-ma-su":"to lie down, go to bed",
+"o-ki-ma-su":"to get up, wake up, happen, occur",
+"ko-wa-re-ma-su":"to be broken",
+"na-o-shi-ma-su":"to repair, fix",
+"a-ge-ma-su":"to give, present/ to raise, lift up",
+"mo-ra-i-ma-su":"to receive, be given",
+"ka-ri-ma-su":"to borrow, rent",
+"a-ga-ri-ma-su":"to go up, rise",
+"sa-ga-ri-ma-su":"to go down, drop"
+}
 
 class ErrorList:
 	
@@ -137,15 +166,14 @@ def createWord(imgFileList, wordFileDict):
 	
 	i=0
 	word=""
-	counter=randint(1,4)
 	
-	while(i<counter):
-		randNum=randint(0,len(imgFileList)-1)
-		word=path.splitext(imgFileList[ randNum ])[0].replace('_','')
-		word=word.lower().strip()
-		wordFileDict[  word ]  = imgFileList[ randNum ]
-		
-		i=i+1
+	
+	syllables=randChoice(wD.keys())
+	tokens=syllables.split('-')
+	print tokens
+	for t in tokens:
+		wordFileDict[ t ] = t+".png"
+	
 	
 	
 imgHolder=[]
@@ -178,6 +206,13 @@ def drawInputBox(master, canvas, textFrame, inputBox, inputLabel,  imgFileList, 
 	#Create a Label in textFrame
 	
 	textFrame= Frame(master)
+	
+	
+	wordLabel=Label(textFrame)
+	wordLabel["text"]=wD[ "-".join( wordFileDict.keys() ) ]
+	wD.pop(  "-".join( wordFileDict.keys() ) , None)
+	wordLabel.pack()
+	
 	inputLabel = Label(textFrame)
 	inputLabel["text"] = "Enter syllables:"
 	inputLabel.pack(side=LEFT)
@@ -190,6 +225,7 @@ def drawInputBox(master, canvas, textFrame, inputBox, inputLabel,  imgFileList, 
 	inputBox.focus_force()
 
 	inputBox.bind("<Return>", lambda func:handleUserInput(master, canvas, textFrame,  inputBox, inputLabel, imgFileList, wordFileDict) )
+	
 	
 	
 	inputBox.pack()
@@ -231,6 +267,7 @@ def main():
 	master["pady"] = 20 
 	
 	wordFileDict={}
+	wordFileDict=OrderedDict(wordFileDict)
 	textFrame=None
 	inputBox=None
 	inputLabel=None
