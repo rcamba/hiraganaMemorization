@@ -19,6 +19,9 @@ TODO:
 	input will now have to be separated in spaces to allow counting mistakes to create the log
 """
 
+
+
+
 wD={"ta-be-ma-su":"to eat", 
 "na-ra-i-ma-su":"to learn", 
 "wa-su-re-ma-su":"to forget", 
@@ -45,8 +48,31 @@ wD={"ta-be-ma-su":"to eat",
 "mo-ra-i-ma-su":"to receive, be given",
 "ka-ri-ma-su":"to borrow, rent",
 "a-ga-ri-ma-su":"to go up, rise",
-"sa-ga-ri-ma-su":"to go down, drop"
+"sa-ga-ri-ma-su":"to go down, drop",
+"be-n-kyo-o": "to learn, study",
+"cho-o-sa":	"to investigate, inquire",
+"chu-u-mo-n": "to order (goods)",
+"de-n-wa": "to phone, call",
+"ge-n-sho-o":  "to decrease, drop",
+"ha-n-ta-i": "to oppose, be against",
+"ha-tsu-ba-i": "to release, be on sale",
+"he-n-ji": "to reply, answer",
+"he-n-ka":	"to change",
+"ho-n-ya-ku": "to translate",
+"ho-o-ko-ku": "to report",
+"i-n-sa-tsu": "to print",
+"ka-i-ha-tsu": "to develop",
+"ka-ku-ni-n": "to check, confirm",
+"ka-n-ri": "to manage, control",
+"ka-n-se-i": "to complete",
+"ke-i-sa-n": "to calculate",
+"ke-n-kyu-u": "to study, research",
+"ke-n-sa": "to check, test, inspect",
+"ke-n-sa-ku": "to search",
+"ke-n-to-o": "to discuss, study, think over",
+"ki-ko-ku" : "to return to one's country"
 }
+
 
 class ErrorList:
 	
@@ -122,14 +148,16 @@ def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList
 	userInput=inputBox.get()
 	
 	if userInput!="quit":	
-		print userInput
 		
-		correctAns= " ".join(  wordFileDict.keys() )
+		
+		correctAns= "".join(  tokens )
 		if correctAns==userInput:
-			print "Correct"
+			print "Correct!"
+		
 		
 		else:
 			print "Wrong. Answer is: ", correctAns
+		
 		
 		
 		if deletePrev==False:
@@ -159,18 +187,18 @@ def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList
 	
 	else:
 		master.destroy()
-
+		
+tokens=[]
 def createWord(imgFileList, wordFileDict):
 	
 	wordFileDict.clear()
-	
+	global tokens
 	i=0
 	word=""
 	
 	
 	syllables=randChoice(wD.keys())
 	tokens=syllables.split('-')
-	print tokens
 	for t in tokens:
 		wordFileDict[ t ] = t+".png"
 	
@@ -180,20 +208,22 @@ imgHolder=[]
 def drawSyllables(master, canvas, wordFileDict):
 	global imgHolder
 	
+	
+	
 	startWidth=0
-	canvas_width=len(wordFileDict.keys())*100
+	canvas_width=len(tokens)*100
 	canvas_height=100
 	
 	canvas = Canvas(master, width=canvas_width, height=canvas_height)
-	for key in wordFileDict.keys()[:]:
-		fileName=wordFileDict[key]
-		
+	for t in tokens:
+		fileName= t+".png"
 		filePath=SYLLABLE_LIST_DIR+"\\"+ fileName
 		imageFile=Image.open( filePath ) 
 		imgHolder.append(  ImageTk.PhotoImage( imageFile) )
 		#store because PhotoImage copy issues; "wrapper for their copy() method is botched"
 		
 		canvas.create_image(startWidth, 0, anchor=NW,  image=imgHolder[len(imgHolder)-1])
+		
 		startWidth+=imageFile.size[0]
 		
 	canvas.pack()
@@ -209,8 +239,8 @@ def drawInputBox(master, canvas, textFrame, inputBox, inputLabel,  imgFileList, 
 	
 	
 	wordLabel=Label(textFrame)
-	wordLabel["text"]=wD[ "-".join( wordFileDict.keys() ) ]
-	wD.pop(  "-".join( wordFileDict.keys() ) , None)
+	wordLabel["text"]=wD[ "-".join( tokens ) ]
+	wD.pop(  "-".join( tokens ) , None)
 	wordLabel.pack()
 	
 	inputLabel = Label(textFrame)
