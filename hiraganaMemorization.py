@@ -12,20 +12,12 @@ from sys import argv
 
 from collections import OrderedDict
 
-"""
-TODO:
-	add scoring
-	create log to display which characters that I make mistakes on
-	input will now have to be separated in spaces to allow counting mistakes to create the log
-"""
-
-
 
 def loadSymDicts(wD):
 	temp={}
 	targs=["verbs"]
 	for t in targs:
-		d=open("symDicts\\"+t).read().replace("\n","")
+		d=open( path.join("symDicts",t) ).read().replace("\n","")
 		d=d.lower()
 		exec("temp="+"{"+d+"}")
 		wD.update(temp)
@@ -103,7 +95,7 @@ def generateCorrectAns(tokens):
 	correctAns=""
 	vowels=['a','e','o','i','u']
 	for i in range(0,len(tokens)):
-		
+
 		if tokens[i]=="minitsu":
 			if i<len(tokens)-1 and tokens[i+1][0] not in vowels:
 				correctAns=correctAns+tokens[i+1][0]
@@ -111,9 +103,9 @@ def generateCorrectAns(tokens):
 				raise ValueError("Last syllable can't be a Sokuon(little tsu) and must not be a vowel" + ". Tokens="+ str(tokens))
 		else:
 			correctAns=correctAns+tokens[i]
-			
+
 	return correctAns
-			
+
 prevCanvas=None
 deletePrev=False
 def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList, wordFileDict):
@@ -134,7 +126,6 @@ def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList
 
 		else:
 			print userInput, "is wrong! Answer is: ", correctAns
-
 
 
 		if deletePrev==False:
@@ -161,7 +152,7 @@ def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList
 			(inputLabel, inputBox)=drawInputBox(master,  canvas, textFrame, inputBox, inputLabel, imgFileList, wordFileDict)
 
 			userInput=inputBox.get()
-	
+
 		else:
 			master.destroy()
 
@@ -189,15 +180,14 @@ def drawSyllables(master, canvas, wordFileDict):
 	global imgHolder
 
 
-
 	startWidth=0
 	canvas_width=len(tokens)*100
 	canvas_height=100
 
 	canvas = Canvas(master, width=canvas_width, height=canvas_height)
 	for t in tokens:
-		fileName= t+".png"
-		filePath=SYLLABLE_LIST_DIR+"\\"+ fileName
+		fileName= 	t.title()+".png"
+		filePath=path.join( SYLLABLE_LIST_DIR, fileName )
 		imageFile=Image.open( filePath )
 		imgHolder.append(  ImageTk.PhotoImage( imageFile) )
 		#store because PhotoImage copy issues; "wrapper for their copy() method is botched"
@@ -216,7 +206,6 @@ def drawInputBox(master, canvas, textFrame, inputBox, inputLabel,  imgFileList, 
 	#Create a Label in textFrame
 
 	textFrame= Frame(master)
-
 
 	wordLabel=Label(textFrame)
 	wordLabel["text"]=wD[ "-".join( tokens ) ]
@@ -237,36 +226,11 @@ def drawInputBox(master, canvas, textFrame, inputBox, inputLabel,  imgFileList, 
 	inputBox.bind("<Return>", lambda func:handleUserInput(master, canvas, textFrame,  inputBox, inputLabel, imgFileList, wordFileDict) )
 
 
-
 	inputBox.pack()
 	textFrame.pack()
 
 	return (inputLabel, inputBox)
 
-
-def createHistogram():
-	erList=ErrorList.load(mistakesLog)
-
-	#count all errors then make chart
-	histogram=[]
-	numOfErrors=0
-	for e in erList:
-
-		if ( e.getCount() >0):
-			numOfErrors=numOfErrors+1
-			histogram.append(e)
-
-	#printing
-	for h in histogram:
-		print h.getCharacter(), "\t:\t", getNumOfBars(h.getCount()/(numOfErrors*1.0)), round((h.getCount()/((numOfErrors)*1.0))*100,2),"%"
-
-def getNumOfBars(num):
-	result=""
-
-	for i in range(0,int(num*100)):
-		result="".join([result,"[]"])
-
-	return result
 
 def main():
 
@@ -295,11 +259,12 @@ def main():
 
 if __name__ == "__main__":
 
-	SYLLABLE_LIST_DIR="symImg"
+	SYLLABLE_LIST_DIR="./symImg"
 	mistakesLog="mistakes.log"
 
 
 	if ("p" in argv):
-		createHistogram()
+		pass
+		#createHistogram()
 	else:
 		main()
