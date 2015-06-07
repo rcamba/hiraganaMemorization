@@ -13,6 +13,16 @@ from sys import argv
 from collections import OrderedDict
 
 
+class MistakeLog:
+	def __init__(self):
+		self.mistakesDict={}
+
+	def addMistake(syl, mistakes, tries):
+		self.mistakesDict[syl]=(mistakes,tries)
+		self.syl=syl
+		self.mistakes=mistakes
+		self.tries=tries
+
 def loadSymDicts(wD):
 	temp={}
 	targs=["verbs"]
@@ -27,69 +37,7 @@ def loadSymDicts(wD):
 
 wD={}
 loadSymDicts(wD)
-
-class ErrorList:
-
-	def __init__(self, characterEr, erCount):
-		self.characterError=characterEr
-		self.count=int(erCount)
-
-	@staticmethod
-	def load(errorLogFile):
-
-		errorList=[]
-		dataError=open(errorLogFile).read().split('\n')
-
-		for data in dataError:
-
-			dataSplit=data.split(':')
-			if (len(dataSplit)>1 ):
-				errorList.append(ErrorList(dataSplit[0],dataSplit[1]))
-
-		return errorList
-
-	@staticmethod
-	def writeLog(errorLogFile, errorList):
-		#writes errorList to errorLog
-		writer=open(errorLogFile,'w')
-		for err in errorList:
-
-			writer.write("".join([err.getCharacter(),':',str(err.getCount())]))
-			writer.write('\n')
-		writer.close()
-
-	def getCharacter(self):
-		return self.characterError
-
-	def getCount(self):
-		return self.count
-
-	def increaseCount(self):
-		self.count=int(self.count)+1
-
-	def __str__(self):
-		return "".join([ self.characterError, ':', str(self.count)])
-
-def createLog(userAns):
-
-	uAnsList=userAns.split()
-	cAnsList=correctAns.split()
-
-	for i in range(0,len(uAnsList)):
-		if(uAnsList[i].lower()!=cAnsList[i].lower()):
-			increaseErrorCount(cAnsList[i])
-
-def increaseErrorCount(error):
-	#finds the error in the log and increases it by 1
-	eList=ErrorList.load(mistakesLog)
-
-	for e in eList:
-		if(e.getCharacter().lower()==error.lower()):
-			e.increaseCount()
-
-			break
-
-	ErrorList.writeLog(mistakesLog, eList)
+eng=""
 
 def generateCorrectAns(tokens):
 	correctAns=""
@@ -135,11 +83,19 @@ def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList
 				canvas.destroy()
 			else:
 				prevCanvas=canvas
+				ltext=correctAns+" : "+eng
+				label = Label(text=ltext, anchor=W)
+				label.pack()
+				prevCanvas.create_window(len(tokens)*40-(len(ltext)*2), -12, window=label, anchor=W)
 
 
 		elif deletePrev==True:
 			prevCanvas.destroy()
 			prevCanvas=canvas
+			ltext=correctAns+" : "+eng
+			label = Label(text=ltext, anchor=W)
+			label.pack()
+			prevCanvas.create_window(len(tokens)*40-(len(ltext)*2), -12, window=label, anchor=W)
 
 		textFrame.destroy()
 
@@ -198,6 +154,7 @@ def drawSyllables(master, canvas, wordFileDict):
 
 	canvas.pack()
 
+
 	return canvas
 
 
@@ -208,7 +165,9 @@ def drawInputBox(master, canvas, textFrame, inputBox, inputLabel,  imgFileList, 
 	textFrame= Frame(master)
 
 	wordLabel=Label(textFrame)
-	wordLabel["text"]=wD[ "-".join( tokens ) ]
+	global eng
+	eng=wD[ "-".join( tokens ) ]
+	wordLabel["text"]=eng
 	wD.pop(  "-".join( tokens ) , None)
 	wordLabel.pack()
 
@@ -237,8 +196,8 @@ def main():
 	master = Tk()
 
 	master.title("Hiragana")
-	master["padx"] = 20
-	master["pady"] = 20
+	master["padx"] = 30
+	master["pady"] = 30
 
 	wordFileDict={}
 	wordFileDict=OrderedDict(wordFileDict)
