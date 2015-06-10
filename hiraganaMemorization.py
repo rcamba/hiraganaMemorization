@@ -56,7 +56,7 @@ def generateCorrectAns(tokens):
 
 prevCanvas=None
 deletePrev=False
-def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList, wordFileDict):
+def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, wordFileDict):
 
 	global prevCanvas
 	global canvasCount
@@ -102,10 +102,10 @@ def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList
 		inputLabel.destroy()
 		inputBox.destroy()
 		if len(wD)>0:
-			createWord(imgFileList,wordFileDict)
+			createWord(wordFileDict)
 
 			canvas=drawSyllables(master, canvas, wordFileDict)
-			(inputLabel, inputBox)=drawInputBox(master,  canvas, textFrame, inputBox, inputLabel, imgFileList, wordFileDict)
+			(inputLabel, inputBox)=drawInputBox(master,  canvas, textFrame, inputBox, inputLabel, wordFileDict)
 
 			userInput=inputBox.get()
 
@@ -116,7 +116,7 @@ def handleUserInput(master, canvas, textFrame, inputBox, inputLabel, imgFileList
 		master.destroy()
 
 tokens=[]
-def createWord(imgFileList, wordFileDict):
+def createWord( wordFileDict):
 
 	wordFileDict.clear()
 	global tokens
@@ -128,7 +128,6 @@ def createWord(imgFileList, wordFileDict):
 	tokens=syllables.split('-')
 	for t in tokens:
 		wordFileDict[ t ] = t+".png"
-
 
 
 imgHolder=[]
@@ -158,7 +157,7 @@ def drawSyllables(master, canvas, wordFileDict):
 	return canvas
 
 
-def drawInputBox(master, canvas, textFrame, inputBox, inputLabel,  imgFileList, wordFileDict):
+def drawInputBox(master, canvas, textFrame, inputBox, inputLabel,   wordFileDict):
 
 	#Create a Label in textFrame
 
@@ -182,7 +181,7 @@ def drawInputBox(master, canvas, textFrame, inputBox, inputLabel,  imgFileList, 
 
 	inputBox.focus_force()
 
-	inputBox.bind("<Return>", lambda func:handleUserInput(master, canvas, textFrame,  inputBox, inputLabel, imgFileList, wordFileDict) )
+	inputBox.bind("<Return>", lambda func:handleUserInput(master, canvas, textFrame,  inputBox, inputLabel,  wordFileDict) )
 
 
 	inputBox.pack()
@@ -205,12 +204,11 @@ def main():
 	inputBox=None
 	inputLabel=None
 
-	imgFileList=listdir(SYLLABLE_LIST_DIR)
-	createWord(imgFileList, wordFileDict)
+	createWord( wordFileDict)
 
 	canvas=None
 	canvas=drawSyllables(master,  canvas, wordFileDict)
-	(inputLabel, inputBox)=drawInputBox(master,  canvas, textFrame, inputBox, inputLabel, imgFileList, wordFileDict)
+	(inputLabel, inputBox)=drawInputBox(master,  canvas, textFrame, inputBox, inputLabel,  wordFileDict)
 
 
 	mainloop()
