@@ -47,7 +47,7 @@ class MainPanel(wx.Panel):
 		#self.wordDict=self.loadSymDicts()
 
 		self.addToggleOptions()
-		#self.addPrevImgBox()
+		self.addPrevImgBox()
 		#self.addClickableOptions()
 		self.addCurrImgBox()
 		#self.addInputTxt()
@@ -55,7 +55,7 @@ class MainPanel(wx.Panel):
 
 		self.topSizer.Add(self.toggleOptSizer)
 
-		#self.imgBoxSizer.Add(self.prevImgNLabelSizer, flag=wx.ALIGN_CENTRE)
+		self.imgBoxSizer.Add(self.prevImgNLabelSizer, flag=wx.ALIGN_CENTRE)
 		self.imgBoxSizer.Add(self.currImgNLabelSizer, flag=wx.ALIGN_CENTRE)
 		#self.imgBoxSizer.Add(self.inputTxtSizer, flag=wx.ALIGN_CENTRE)
 
@@ -120,15 +120,27 @@ class MainPanel(wx.Panel):
 		self.drawWord(fileList, self.currImgSizer)
 		self.currImgNLabelSizer.Add(self.currImgSizer, flag=wx.ALIGN_CENTRE)
 
-	'''
+
 	def addPrevImgBox(self):
 
-		imgFile=self.getImage(path.join(pathToModule,"symImg","ko.png"),True)
-		self.prevImgSizer.Add(imgFile, proportion=0, flag=wx.ALL)
-		self.prevImgNLabelSizer.Add(self.prevImgSizer)
-		#imgFile.Destroy()
+		#placeholder
+
+		word="no-mi-ma-su"
+
+		self.wordLabel=wx.StaticText(self)
+		font=wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTWEIGHT_NORMAL, wx.FONTWEIGHT_NORMAL)
+		self.wordLabel.SetFont(font)
+
+		self.wordLabel.SetLabel(word)
+		self.prevImgNLabelSizer.Add(self.wordLabel, flag=wx.ALIGN_CENTRE)
+
+		fileList=self.fileListForWord(word)
+
+		self.drawWord(fileList, self.prevImgSizer)
+		self.prevImgNLabelSizer.Add(self.prevImgSizer, flag=wx.ALIGN_CENTRE)
 
 
+	'''
 	def addClickableOptions(self):
 		self.statsButton =wx.Button(self, label="View Statistics")
 		self.changeDict =wx.Button(self, label="Change dictionary")
