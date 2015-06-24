@@ -25,6 +25,11 @@ class MainPanel(wx.Panel):
 		self.prevWord=""
 		self.definition=""
 
+		self.currImgHolder=[]
+		self.prevImgHolder=[]
+		self.defaultDict=["verbs"]
+		self.wordDict=self.loadSymDicts()
+
 		self.topSizer = wx.BoxSizer(wx.HORIZONTAL)
 
 		self.toggleOptSizer = wx.BoxSizer(wx.VERTICAL)
@@ -41,11 +46,6 @@ class MainPanel(wx.Panel):
 		self.clickableOptSizer = wx.BoxSizer(wx.VERTICAL)
 
 		self.inputTxtSizer = wx.BoxSizer(wx.HORIZONTAL)
-
-		#self.imgHolder=[]
-		#self.prevImgHolder=[]
-		#self.defaultDict=["verbs"]
-		#self.wordDict=self.loadSymDicts()
 
 		self.addToggleOptions()
 		self.addPrevImgBox()
@@ -67,6 +67,18 @@ class MainPanel(wx.Panel):
 		self.Layout()
 
 		#self.parent.Bind(wx.EVT_CLOSE, self.closeHandler)
+
+	def loadSymDicts(self):
+		wordDict={}
+		temp={}
+
+		for file in self.defaultDict:
+			d=open( path.join(self.symDictPath,file) ).read().replace("\n","")
+			d=d.lower()
+			exec("temp="+"{"+d+"}")
+			wordDict.update(temp)
+
+		return wordDict
 
 	def addToggleOptions(self):
 
@@ -92,10 +104,13 @@ class MainPanel(wx.Panel):
 
 		return imgRes
 
-	def drawWord(self, fileList, targSizer):
+	def drawWord(self, fileList, targSizer, storage, hidden=False):
 
 		for f in fileList:
 			imgObj=self.getImage(path.join(self.symImgPath,f))
+			if hidden:
+				imgObj.Hide()
+			storage.append(imgObj)
 			targSizer.Add(imgObj, proportion=0, flag=wx.ALL, border=0)
 
 	def fileListForWord(self, word):
@@ -114,7 +129,7 @@ class MainPanel(wx.Panel):
 
 		fileList=self.fileListForWord(word)
 
-		self.drawWord(fileList, self.currImgSizer)
+		self.drawWord(fileList, self.currImgSizer, self.currImgHolder)
 		self.currImgNLabelSizer.Add(self.currImgSizer, flag=wx.ALIGN_CENTRE)
 
 
@@ -133,7 +148,7 @@ class MainPanel(wx.Panel):
 
 		fileList=self.fileListForWord(word)
 
-		self.drawWord(fileList, self.prevImgSizer)
+		self.drawWord(fileList, self.prevImgSizer, self.prevImgHolder)
 		self.prevImgNLabelSizer.Add(self.prevImgSizer, flag=wx.ALIGN_CENTRE)
 
 

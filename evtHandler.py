@@ -17,10 +17,31 @@ def handleClickInputBox(evt):
 	evt.GetEventObject().SetValue("")
 	evt.GetEventObject().SetFocus()
 
-def handleInput(self,evt):
+def handleInput(self, evt):
 	print evt.GetEventObject().GetValue()
 	evt.GetEventObject().SetValue("")
 	evt.GetEventObject().SetFocus()
+
+	nextCurrImgBox(self, evt);
+
+def nextCurrImgBox(self, evt):
+
+	word=randChoice(self.wordDict.keys())
+	self.definition=self.wordDict[word]
+	self.wordDict.pop(word)
+
+	self.wordLabel.SetLabel(self.definition)
+
+	fileList=self.fileListForWord(word)
+
+	[img.Destroy() for img in self.currImgHolder]
+	self.currImgHolder=[]
+
+	self.drawWord(fileList, self.currImgSizer, self.currImgHolder, hidden=True)
+
+	[img.Show() for img in self.currImgHolder]
+
+	self.Layout()
 '''
 
 def correctAnsForFileList(fileList):
@@ -72,34 +93,5 @@ def checkForCorrectAns(self, evt):
 
 
 
-def drawNextWord(self, evt):
-
-		randWord=randChoice(self.wordDict.keys())
-		self.prevWord=randWord
-		self.definition=self.wordDict[randWord]
-		self.randWordLabel.SetLabel(self.definition)
-		self.wordDict.pop(randWord)
-		fileList=fileListForWord(randWord)
-
-		for i in self.imgHolder[:]:
-			i.Destroy()
-		self.imgHolder=[]
-
-		#self.currImgSizer.Clear()
-
-		#self.currImgNLabelSizer.Layout()
-		#self.imgBoxSizer.Layout()
-
-
-		for filename in fileList:
-			self.drawImage(filename, self.currImgSizer)
-
-
-		for i in self.imgHolder[:]:
-			i.Show()
-
-		#self.currImgNLabelSizer.Layout()
-		#self.imgBoxSizer.Layout()
-		self.Layout()
 
 '''
