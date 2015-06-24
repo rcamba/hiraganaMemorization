@@ -56,6 +56,9 @@ class MainPanel(wx.Panel):
 		self.topSizer.Add(self.toggleOptSizer)
 
 		self.imgBoxSizer.Add(self.prevImgNLabelSizer, flag=wx.ALIGN_CENTRE)
+
+		self.imgBoxSizer.AddSpacer(20)
+
 		self.imgBoxSizer.Add(self.currImgNLabelSizer, flag=wx.ALIGN_CENTRE)
 		self.imgBoxSizer.Add(self.inputTxtSizer, flag=wx.ALIGN_CENTRE)
 
@@ -121,37 +124,32 @@ class MainPanel(wx.Panel):
 
 	def addCurrImgBox(self):
 
-		self.currWord="ta-be-ma-su"
+		self.currWord=randChoice(self.wordDict.keys())
+		self.definition=self.wordDict[self.currWord]
+		self.wordDict.pop(self.currWord)
 
 		self.currWordLabel=wx.StaticText(self)
 		font=wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTWEIGHT_NORMAL, wx.FONTWEIGHT_NORMAL)
 		self.currWordLabel.SetFont(font)
-
-		self.currWordLabel.SetLabel(self.currWord)
-		self.currImgNLabelSizer.Add(self.currWordLabel, flag=wx.ALIGN_CENTRE)
 
 		fileList=self.fileListForWord(self.currWord)
 
 		self.drawWord(fileList, self.currImgSizer, self.currImgHolder)
 		self.currImgNLabelSizer.Add(self.currImgSizer, flag=wx.ALIGN_CENTRE)
 
+		self.currWordLabel.SetLabel(self.definition)
+		self.currImgNLabelSizer.Add(self.currWordLabel, flag=wx.ALIGN_CENTRE)
+
 
 	def addPrevImgBox(self):
-
-		#placeholder
-
-		word="no-mi-ma-su"
 
 		self.prevWordLabel=wx.StaticText(self)
 		font=wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTWEIGHT_NORMAL, wx.FONTWEIGHT_NORMAL)
 		self.prevWordLabel.SetFont(font)
 
-		self.prevWordLabel.SetLabel(word)
+		self.prevWordLabel.SetLabel("")
 		self.prevImgNLabelSizer.Add(self.prevWordLabel, flag=wx.ALIGN_CENTRE)
 
-		fileList=self.fileListForWord(word)
-
-		self.drawWord(fileList, self.prevImgSizer, self.prevImgHolder)
 		self.prevImgNLabelSizer.Add(self.prevImgSizer, flag=wx.ALIGN_CENTRE)
 
 
