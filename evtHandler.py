@@ -7,11 +7,16 @@ def hideDefinitionHandler(obj):
 def hideRomajiHandler(obj):
 	print "hideRomajiHandler"
 
-'''
+
 def handleClickInputBox(evt):
 	evt.GetEventObject().SetValue("")
 	evt.GetEventObject().SetFocus()
 
+def handleInput(self,evt):
+	print evt.GetEventObject().GetValue()
+	evt.GetEventObject().SetValue("")
+	evt.GetEventObject().SetFocus()
+'''
 
 def correctAnsForFileList(fileList):
 
@@ -59,10 +64,7 @@ def checkForCorrectAns(self, evt):
 	print rStr
 	evt.GetEventObject().SetValue("")
 
-def handleInput(self,evt):
-	updatePrevImgBox(self, evt)
-	checkForCorrectAns(self, evt)
-	drawNextWord(self, evt)
+
 
 
 def drawNextWord(self, evt):

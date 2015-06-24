@@ -19,6 +19,7 @@ class MainPanel(wx.Panel):
 		#self.configFile=pathToModule+"/../config.conf"
 		#self.confParser.read(self.configFile)
 		self.imgBoxSize=(800,100)
+		self.inputTxtSize=(800,32)
 		self.symDictPath=path.join(pathToModule,"symDicts")
 		self.symImgPath=path.join(pathToModule,"symImg")
 		self.prevWord=""
@@ -48,16 +49,16 @@ class MainPanel(wx.Panel):
 
 		self.addToggleOptions()
 		self.addPrevImgBox()
-		#self.addClickableOptions()
 		self.addCurrImgBox()
-		#self.addInputTxt()
+		self.addInputTxt()
+		#self.addClickableOptions()
 
 
 		self.topSizer.Add(self.toggleOptSizer)
 
 		self.imgBoxSizer.Add(self.prevImgNLabelSizer, flag=wx.ALIGN_CENTRE)
 		self.imgBoxSizer.Add(self.currImgNLabelSizer, flag=wx.ALIGN_CENTRE)
-		#self.imgBoxSizer.Add(self.inputTxtSizer, flag=wx.ALIGN_CENTRE)
+		self.imgBoxSizer.Add(self.inputTxtSizer, flag=wx.ALIGN_CENTRE)
 
 		self.topSizer.Add(self.imgBoxSizer, flag=wx.ALIGN_CENTRE)
 
@@ -73,13 +74,10 @@ class MainPanel(wx.Panel):
 		self.hideRomaji= wx.CheckBox(parent=self, id=-1, label="Hide romaji")
 		self.hideDefinition= wx.CheckBox(parent=self, id=-1, label="Hide definition")
 
-
 		self.toggleOptSizer.Add(self.hideRomaji, proportion=0, flag=wx.ALL, border=20)
 		self.toggleOptSizer.Add(self.hideDefinition, proportion=0, flag=wx.ALL, border=20)
 
-
 		self.Bind(wx.EVT_CHECKBOX, hideRomajiHandler, self.hideRomaji)
-
 		self.Bind(wx.EVT_CHECKBOX, hideDefinitionHandler, self.hideDefinition)
 
 		tip="Hide english definition of the world"
@@ -140,6 +138,22 @@ class MainPanel(wx.Panel):
 		self.prevImgNLabelSizer.Add(self.prevImgSizer, flag=wx.ALIGN_CENTRE)
 
 
+	def addInputTxt(self):
+		self.inputTxt= wx.TextCtrl(self, size=self.inputTxtSize, style=wx.TE_PROCESS_ENTER)
+		self.inputTxt.SetValue("Enter syllables")
+
+		self.inputTxt.Bind(wx.EVT_TEXT_ENTER, lambda evt :handleInput(self, evt) )
+
+		self.inputTxt.Bind(wx.EVT_KILL_FOCUS, lambda evt : evt.GetEventObject().SetValue("Enter syllables"))
+
+		self.inputTxt.Bind(wx.EVT_LEFT_DOWN, handleClickInputBox)
+		self.inputTxt.Bind(wx.EVT_SET_FOCUS, handleClickInputBox)
+
+
+		self.inputTxt.SetFocus()
+
+		self.inputTxtSizer.Add(self.inputTxt, proportion=0, flag=wx.ALL, border=25)
+
 	'''
 	def addClickableOptions(self):
 		self.statsButton =wx.Button(self, label="View Statistics")
@@ -152,19 +166,7 @@ class MainPanel(wx.Panel):
 
 
 
-	def addInputTxt(self):
-		self.inputTxt= wx.TextCtrl(self, size=(800,32), style=wx.TE_PROCESS_ENTER)
-		self.inputTxt.SetValue("Enter syllables")
 
-
-		self.inputTxt.Bind(wx.EVT_TEXT_ENTER, lambda evt :handleInput(self, evt) )
-		self.inputTxt.Bind(wx.EVT_LEFT_DOWN, handleClickInputBox)
-		self.inputTxt.Bind(wx.EVT_SET_FOCUS, handleClickInputBox)
-		self.inputTxt.Bind(wx.EVT_KILL_FOCUS, lambda evt : evt.GetEventObject().SetValue("Enter syllables"))
-
-		self.inputTxt.SetFocus()
-
-		self.inputTxtSizer.Add(self.inputTxt, proportion=0, flag=wx.ALL, border=25)
 
 	'''
 
