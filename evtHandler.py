@@ -1,18 +1,26 @@
 import wx
 from random import choice as randChoice
 
-def hideDefinitionHandler(evt):
-	print "hideDefinitionHandler"
+#can't have both definition and img hidden
+def hideDefinitionHandler(self, evt):
+	if evt.GetEventObject().IsChecked():
+		self.currWordLabel.Hide()
+		self.prevWordLabel.Hide()
+		self.Layout()
+
+	else:
+		self.currWordLabel.Show()
+		self.prevWordLabel.Show()
+		self.Layout()
+
 
 def hideSyllableImgHandler(self, evt):
 	if evt.GetEventObject().IsChecked():
-		[img.Hide() for img in self.prevImgHolder]
-		[img.Hide() for img in self.currImgHolder]
+		[img.Hide() for img in self.prevImgHolder+self.currImgHolder]
 		self.Layout()
 		self.hideSyllableImgFlag=True
 	else:
-		[img.Show() for img in self.prevImgHolder]
-		[img.Show() for img in self.currImgHolder]
+		[img.Show() for img in self.prevImgHolder+self.currImgHolder]
 		self.Layout()
 		self.hideSyllableImgFlag=False
 

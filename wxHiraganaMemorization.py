@@ -97,13 +97,13 @@ class MainPanel(wx.Panel):
 
 		self.hideSyllableImg.Bind(wx.EVT_CHECKBOX, lambda evt :hideSyllableImgHandler(self, evt) )
 
+		self.hideDefinition.Bind(wx.EVT_CHECKBOX, lambda evt :hideDefinitionHandler(self, evt) )
 
-		self.Bind(wx.EVT_CHECKBOX, hideDefinitionHandler, self.hideDefinition)
 
 		tip="Hide english definition of the world"
 		self.hideDefinition.SetToolTipString(tip)
 
-		tip="Hide phonetic pronounciation of the word"
+		tip="Hide image syllable of the word"
 		self.hideSyllableImg.SetToolTipString(tip)
 
 	def getImage(self, filename):
