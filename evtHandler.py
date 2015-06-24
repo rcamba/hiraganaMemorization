@@ -22,17 +22,35 @@ def handleInput(self, evt):
 	evt.GetEventObject().SetValue("")
 	evt.GetEventObject().SetFocus()
 
-	nextCurrImgBox(self, evt);
+	nextPrevImgBox(self, evt)
+	nextCurrImgBox(self, evt)
+
+def nextPrevImgBox(self, evt):
+	prevWord=self.currWord
+	prevDef=self.definition
+
+	self.prevWordLabel.SetLabel(prevDef)
+
+	fileList=self.fileListForWord(prevWord)
+
+	[img.Destroy() for img in self.prevImgHolder]
+	self.prevImgHolder=[]
+
+	self.drawWord(fileList, self.prevImgSizer, self.prevImgHolder, hidden=True)
+
+	[img.Show() for img in self.prevImgHolder]
+
+	self.Layout()
 
 def nextCurrImgBox(self, evt):
 
-	word=randChoice(self.wordDict.keys())
-	self.definition=self.wordDict[word]
-	self.wordDict.pop(word)
+	self.currWord=randChoice(self.wordDict.keys())
+	self.definition=self.wordDict[self.currWord]
+	self.wordDict.pop(self.currWord)
 
-	self.wordLabel.SetLabel(self.definition)
+	self.currWordLabel.SetLabel(self.definition)
 
-	fileList=self.fileListForWord(word)
+	fileList=self.fileListForWord(self.currWord)
 
 	[img.Destroy() for img in self.currImgHolder]
 	self.currImgHolder=[]

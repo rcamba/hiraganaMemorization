@@ -22,7 +22,7 @@ class MainPanel(wx.Panel):
 		self.inputTxtSize=(800,32)
 		self.symDictPath=path.join(pathToModule,"symDicts")
 		self.symImgPath=path.join(pathToModule,"symImg")
-		self.prevWord=""
+		self.currWord=""
 		self.definition=""
 
 		self.currImgHolder=[]
@@ -118,16 +118,16 @@ class MainPanel(wx.Panel):
 
 	def addCurrImgBox(self):
 
-		word="ta-be-ma-su"
+		self.currWord="ta-be-ma-su"
 
-		self.wordLabel=wx.StaticText(self)
+		self.currWordLabel=wx.StaticText(self)
 		font=wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTWEIGHT_NORMAL, wx.FONTWEIGHT_NORMAL)
-		self.wordLabel.SetFont(font)
+		self.currWordLabel.SetFont(font)
 
-		self.wordLabel.SetLabel(word)
-		self.currImgNLabelSizer.Add(self.wordLabel, flag=wx.ALIGN_CENTRE)
+		self.currWordLabel.SetLabel(self.currWord)
+		self.currImgNLabelSizer.Add(self.currWordLabel, flag=wx.ALIGN_CENTRE)
 
-		fileList=self.fileListForWord(word)
+		fileList=self.fileListForWord(self.currWord)
 
 		self.drawWord(fileList, self.currImgSizer, self.currImgHolder)
 		self.currImgNLabelSizer.Add(self.currImgSizer, flag=wx.ALIGN_CENTRE)
@@ -139,12 +139,12 @@ class MainPanel(wx.Panel):
 
 		word="no-mi-ma-su"
 
-		self.wordLabel=wx.StaticText(self)
+		self.prevWordLabel=wx.StaticText(self)
 		font=wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTWEIGHT_NORMAL, wx.FONTWEIGHT_NORMAL)
-		self.wordLabel.SetFont(font)
+		self.prevWordLabel.SetFont(font)
 
-		self.wordLabel.SetLabel(word)
-		self.prevImgNLabelSizer.Add(self.wordLabel, flag=wx.ALIGN_CENTRE)
+		self.prevWordLabel.SetLabel(word)
+		self.prevImgNLabelSizer.Add(self.prevWordLabel, flag=wx.ALIGN_CENTRE)
 
 		fileList=self.fileListForWord(word)
 
