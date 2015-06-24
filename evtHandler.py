@@ -13,9 +13,6 @@ def handleClickInputBox(evt):
 	evt.GetEventObject().SetFocus()
 
 
-def fileListForWord(word):
-	return [syllable.lower()+".png" for syllable in word.split('-')]
-
 def correctAnsForFileList(fileList):
 
 	word=""

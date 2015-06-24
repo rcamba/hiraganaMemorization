@@ -49,19 +49,19 @@ class MainPanel(wx.Panel):
 		self.addToggleOptions()
 		#self.addPrevImgBox()
 		#self.addClickableOptions()
-		#self.addCurrImgBox()
+		self.addCurrImgBox()
 		#self.addInputTxt()
 
 
 		self.topSizer.Add(self.toggleOptSizer)
 
-		self.imgBoxSizer.Add(self.prevImgNLabelSizer, flag=wx.ALIGN_CENTRE)
+		#self.imgBoxSizer.Add(self.prevImgNLabelSizer, flag=wx.ALIGN_CENTRE)
 		self.imgBoxSizer.Add(self.currImgNLabelSizer, flag=wx.ALIGN_CENTRE)
-		self.imgBoxSizer.Add(self.inputTxtSizer, flag=wx.ALIGN_CENTRE)
+		#self.imgBoxSizer.Add(self.inputTxtSizer, flag=wx.ALIGN_CENTRE)
 
 		self.topSizer.Add(self.imgBoxSizer, flag=wx.ALIGN_CENTRE)
 
-		self.topSizer.Add(self.clickableOptSizer)
+		#self.topSizer.Add(self.clickableOptSizer)
 
 		self.SetSizer(self.topSizer)
 		self.Layout()
@@ -88,6 +88,38 @@ class MainPanel(wx.Panel):
 		tip="Hide phonetic pronounciation of the word"
 		self.hideRomaji.SetToolTipString(tip)
 
+	def getImage(self, filename):
+		img = wx.Image(filename, wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+
+		imgRes=wx.StaticBitmap(self, -1, img, (img.GetWidth(), img.GetHeight()))
+
+		return imgRes
+
+	def drawWord(self, fileList, targSizer):
+
+		for f in fileList:
+			imgObj=self.getImage(path.join(self.symImgPath,f))
+			targSizer.Add(imgObj, proportion=0, flag=wx.ALL, border=0)
+
+	def fileListForWord(self, word):
+		return [syllable.lower()+".png" for syllable in word.split('-')]
+
+	def addCurrImgBox(self):
+
+		word="ta-be-ma-su"
+
+		self.wordLabel=wx.StaticText(self)
+		font=wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTWEIGHT_NORMAL, wx.FONTWEIGHT_NORMAL)
+		self.wordLabel.SetFont(font)
+
+		self.wordLabel.SetLabel(word)
+		self.currImgNLabelSizer.Add(self.wordLabel, flag=wx.ALIGN_CENTRE)
+
+		fileList=self.fileListForWord(word)
+
+		self.drawWord(fileList, self.currImgSizer)
+		self.currImgNLabelSizer.Add(self.currImgSizer, flag=wx.ALIGN_CENTRE)
+
 	'''
 	def addPrevImgBox(self):
 
@@ -105,50 +137,6 @@ class MainPanel(wx.Panel):
 		self.clickableOptSizer.Add(self.changeDict,proportion=0, flag=wx.ALL, border=20)
 
 
-
-	def getImage(self, filename, n=False):
-		img = wx.Image(filename, wx.BITMAP_TYPE_PNG).ConvertToBitmap()
-
-		imgRes=wx.StaticBitmap(self, -1, img, (img.GetWidth(), img.GetHeight()))
-		if n==False:
-
-			imgRes.Hide()
-			self.imgHolder.append(imgRes)
-			self.prevImgHolder.append(wx.StaticBitmap(self, -1, img, (img.GetWidth(), img.GetHeight())))
-		return imgRes
-
-	def drawImage(self, imageFileName, targSizer):
-
-		imgObj=self.getImage(path.join(self.symImgPath,imageFileName))
-		#print dir(imgObj)
-
-
-
-		targSizer.Add(imgObj, proportion=0, flag=wx.ALL, border=0)
-
-
-
-	def addCurrImgBox(self):
-
-		randWord=randChoice(self.wordDict.keys())
-		self.prevWord=randWord
-		self.definition=self.wordDict[randWord]
-		self.randWordLabel=wx.StaticText(self)
-		self.randWordLabel.SetLabel(self.wordDict[randWord])
-		self.wordDict.pop(randWord)
-		fileList=fileListForWord(randWord)
-
-		font=wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTWEIGHT_NORMAL, wx.FONTWEIGHT_NORMAL)
-		self.randWordLabel.SetFont(font)
-		self.currImgNLabelSizer.Add(self.randWordLabel, flag=wx.ALIGN_CENTRE)
-
-		for filename in fileList:
-			self.drawImage(filename, self.currImgSizer)
-
-		for i in self.imgHolder[:]:
-			i.Show()
-
-		self.currImgNLabelSizer.Add(self.currImgSizer)
 
 
 
