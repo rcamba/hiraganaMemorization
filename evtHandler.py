@@ -4,8 +4,17 @@ from random import choice as randChoice
 def hideDefinitionHandler(evt):
 	print "hideDefinitionHandler"
 
-def hideRomajiHandler(evt):
-	print "hideRomajiHandler"
+def hideSyllableImgHandler(self, evt):
+	if evt.GetEventObject().IsChecked():
+		[img.Hide() for img in self.prevImgHolder]
+		[img.Hide() for img in self.currImgHolder]
+		self.Layout()
+		self.hideSyllableImgFlag=True
+	else:
+		[img.Show() for img in self.prevImgHolder]
+		[img.Show() for img in self.currImgHolder]
+		self.Layout()
+		self.hideSyllableImgFlag=False
 
 def statsBtnHandler(evt):
 	print "Stats button"
@@ -50,9 +59,7 @@ def nextPrevImgBox(self, evt):
 
 	self.drawWord(fileList, self.prevImgSizer, self.prevImgHolder, hidden=True)
 
-	[img.Show() for img in self.prevImgHolder]
 
-	self.Layout()
 
 def nextCurrImgBox(self, evt):
 
@@ -69,9 +76,7 @@ def nextCurrImgBox(self, evt):
 
 	self.drawWord(fileList, self.currImgSizer, self.currImgHolder, hidden=True)
 
-	[img.Show() for img in self.currImgHolder]
 
-	self.Layout()
 '''
 
 def correctAnsForFileList(fileList):

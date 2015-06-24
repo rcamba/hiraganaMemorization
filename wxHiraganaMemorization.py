@@ -29,6 +29,7 @@ class MainPanel(wx.Panel):
 		self.prevImgHolder=[]
 		self.defaultDict=["verbs"]
 		self.wordDict=self.loadSymDicts()
+		self.hideSyllableImgFlag=False
 
 		self.topSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -88,20 +89,22 @@ class MainPanel(wx.Panel):
 
 	def addToggleOptions(self):
 
-		self.hideRomaji= wx.CheckBox(parent=self, id=-1, label="Hide romaji")
+		self.hideSyllableImg= wx.CheckBox(parent=self, id=-1, label="Hide romaji")
 		self.hideDefinition= wx.CheckBox(parent=self, id=-1, label="Hide definition")
 
-		self.toggleOptSizer.Add(self.hideRomaji, proportion=0, flag=wx.ALL, border=20)
+		self.toggleOptSizer.Add(self.hideSyllableImg, proportion=0, flag=wx.ALL, border=20)
 		self.toggleOptSizer.Add(self.hideDefinition, proportion=0, flag=wx.ALL, border=20)
 
-		self.Bind(wx.EVT_CHECKBOX, hideRomajiHandler, self.hideRomaji)
+		self.hideSyllableImg.Bind(wx.EVT_CHECKBOX, lambda evt :hideSyllableImgHandler(self, evt) )
+
+
 		self.Bind(wx.EVT_CHECKBOX, hideDefinitionHandler, self.hideDefinition)
 
 		tip="Hide english definition of the world"
 		self.hideDefinition.SetToolTipString(tip)
 
 		tip="Hide phonetic pronounciation of the word"
-		self.hideRomaji.SetToolTipString(tip)
+		self.hideSyllableImg.SetToolTipString(tip)
 
 	def getImage(self, filename):
 		img = wx.Image(filename, wx.BITMAP_TYPE_PNG).ConvertToBitmap()
@@ -118,6 +121,16 @@ class MainPanel(wx.Panel):
 				imgObj.Hide()
 			storage.append(imgObj)
 			targSizer.Add(imgObj, proportion=0, flag=wx.ALL, border=0)
+
+		if self.hideSyllableImgFlag is False:
+			[img.Show() for img in storage]
+			self.Layout()
+		else:#... for keeping the label in center
+			[img.Show() for img in storage]
+			self.Layout()
+			[img.Hide() for img in storage]
+			self.Layout()
+
 
 	def fileListForWord(self, word):
 		return [syllable.lower()+".png" for syllable in word.split('-')]
