@@ -126,9 +126,6 @@ class MainPanel(wx.Panel):
 			[img.Show() for img in storage]
 			self.Layout()
 		else:#... for keeping the label in center
-			[img.Show() for img in storage]
-			self.Layout()
-			[img.Hide() for img in storage]
 			self.Layout()
 
 
