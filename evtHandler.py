@@ -18,12 +18,24 @@ def handleClickInputBox(evt):
 	evt.GetEventObject().SetFocus()
 
 def handleInput(self, evt):
-	print evt.GetEventObject().GetValue()
+	userAns=evt.GetEventObject().GetValue()
 	evt.GetEventObject().SetValue("")
 	evt.GetEventObject().SetFocus()
 
-	nextPrevImgBox(self, evt)
-	nextCurrImgBox(self, evt)
+	if userAns=="quit" or userAns=="exit":
+		self.closeHandler()
+	else:
+		checkAns(self, userAns)
+		nextPrevImgBox(self, evt)
+		nextCurrImgBox(self, evt)
+
+def checkAns(self, userAns):
+	correctAns=self.currWord.replace("-","")
+	if userAns==correctAns:
+		print "Correct"
+	else:
+		print "{userAns} is wrong. Correct answer is {correctAns}".format(userAns=userAns, correctAns=correctAns)
+
 
 def nextPrevImgBox(self, evt):
 	prevWord=self.currWord

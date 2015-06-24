@@ -66,7 +66,10 @@ class MainPanel(wx.Panel):
 		self.SetSizer(self.topSizer)
 		self.Layout()
 
-		#self.parent.Bind(wx.EVT_CLOSE, self.closeHandler)
+		self.parent.Bind(wx.EVT_CLOSE, self.closeHandler)
+
+	def closeHandler(self,evt=None):
+		self.parent.Destroy()
 
 	def loadSymDicts(self):
 		wordDict={}
