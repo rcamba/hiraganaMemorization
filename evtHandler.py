@@ -1,12 +1,17 @@
 import wx
 from random import choice as randChoice
 
-def hideDefinitionHandler(obj):
+def hideDefinitionHandler(evt):
 	print "hideDefinitionHandler"
 
-def hideRomajiHandler(obj):
+def hideRomajiHandler(evt):
 	print "hideRomajiHandler"
 
+def statsBtnHandler(evt):
+	print "Stats button"
+
+def changesDictBtnHandler(evt):
+	print "Change dict"
 
 def handleClickInputBox(evt):
 	evt.GetEventObject().SetValue("")

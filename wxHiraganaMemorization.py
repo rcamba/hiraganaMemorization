@@ -51,8 +51,7 @@ class MainPanel(wx.Panel):
 		self.addPrevImgBox()
 		self.addCurrImgBox()
 		self.addInputTxt()
-		#self.addClickableOptions()
-
+		self.addClickableOptions()
 
 		self.topSizer.Add(self.toggleOptSizer)
 
@@ -62,7 +61,7 @@ class MainPanel(wx.Panel):
 
 		self.topSizer.Add(self.imgBoxSizer, flag=wx.ALIGN_CENTRE)
 
-		#self.topSizer.Add(self.clickableOptSizer)
+		self.topSizer.Add(self.clickableOptSizer)
 
 		self.SetSizer(self.topSizer)
 		self.Layout()
@@ -149,26 +148,21 @@ class MainPanel(wx.Panel):
 		self.inputTxt.Bind(wx.EVT_LEFT_DOWN, handleClickInputBox)
 		self.inputTxt.Bind(wx.EVT_SET_FOCUS, handleClickInputBox)
 
-
 		self.inputTxt.SetFocus()
 
 		self.inputTxtSizer.Add(self.inputTxt, proportion=0, flag=wx.ALL, border=25)
 
-	'''
+
 	def addClickableOptions(self):
-		self.statsButton =wx.Button(self, label="View Statistics")
-		self.changeDict =wx.Button(self, label="Change dictionary")
+		self.statsButton=wx.Button(self, label="View Statistics")
+		self.changeDict=wx.Button(self, label="Change dictionary")
 
 		self.clickableOptSizer.Add(self.statsButton ,proportion=0, flag=wx.ALL, border=20)
 		self.clickableOptSizer.Add(self.changeDict,proportion=0, flag=wx.ALL, border=20)
 
+		self.statsButton.Bind(wx.EVT_BUTTON, statsBtnHandler)
+		self.changeDict.Bind(wx.EVT_BUTTON, changesDictBtnHandler)
 
-
-
-
-
-
-	'''
 
 class MainFrame(wx.Frame):
 	def __init__(self):
