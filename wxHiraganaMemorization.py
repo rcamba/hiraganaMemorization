@@ -107,7 +107,12 @@ class MainPanel(wx.Panel):
 		self.hideSyllableImg.SetToolTipString(tip)
 
 	def getImage(self, filename):
-		img = wx.Image(filename, wx.BITMAP_TYPE_PNG).ConvertToBitmap()
+		img = wx.Image(filename, wx.BITMAP_TYPE_PNG)
+
+		img=img.ConvertToBitmap()
+
+		mask = wx.Mask(img, wx.WHITE)
+		img.SetMask(mask)
 
 		imgRes=wx.StaticBitmap(self, -1, img, (img.GetWidth(), img.GetHeight()))
 
@@ -124,10 +129,9 @@ class MainPanel(wx.Panel):
 
 		if self.hideSyllableImgFlag is False:
 			[img.Show() for img in storage]
-			self.Layout()
-		else:#... for keeping the label in center
-			self.Layout()
 
+		self.imgBoxSizer.Layout()
+		self.Layout()
 
 	def fileListForWord(self, word):
 		return [syllable.lower()+".png" for syllable in word.split('-')]
