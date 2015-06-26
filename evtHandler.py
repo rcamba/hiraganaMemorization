@@ -1,28 +1,35 @@
 import wx
 from random import choice as randChoice
 
-#can't have both definition and img hidden
-def hideDefinitionHandler(self, evt):
-	if evt.GetEventObject().IsChecked():
-		self.currWordLabel.Hide()
-		self.prevWordLabel.Hide()
-		self.Layout()
+def resetToggleOpt(self, evt, resetTargs=["def","sylImg"]):
 
-	else:
+	if "def" in resetTargs:
 		self.currWordLabel.Show()
 		self.prevWordLabel.Show()
 		self.Layout()
 
-
-def hideSyllableImgHandler(self, evt):
-	if evt.GetEventObject().IsChecked():
-		[img.Hide() for img in self.prevImgHolder+self.currImgHolder]
-		self.Layout()
-		self.hideSyllableImgFlag=True
-	else:
+	if "sylImg" in resetTargs:
 		[img.Show() for img in self.prevImgHolder+self.currImgHolder]
 		self.Layout()
 		self.hideSyllableImgFlag=False
+
+
+def hideDefinitionHandler(self, evt):
+	resetToggleOpt(self, evt, ["sylImg"])
+	if evt.GetEventObject().GetValue():
+		self.currWordLabel.Hide()
+		self.prevWordLabel.Hide()
+		self.Layout()
+
+
+def hideSyllableImgHandler(self, evt):
+	resetToggleOpt(self, evt, ["def"])
+	if evt.GetEventObject().GetValue():
+		[img.Hide() for img in self.prevImgHolder+self.currImgHolder]
+		self.Layout()
+		self.hideSyllableImgFlag=True
+
+
 
 def statsBtnHandler(evt):
 	print "Stats button"

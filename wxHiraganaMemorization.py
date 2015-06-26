@@ -89,15 +89,20 @@ class MainPanel(wx.Panel):
 
 	def addToggleOptions(self):
 
-		self.hideSyllableImg= wx.CheckBox(parent=self, id=-1, label="Hide romaji")
-		self.hideDefinition= wx.CheckBox(parent=self, id=-1, label="Hide definition")
+		self.noneRadio= wx.RadioButton(parent=self, id=-1, label="None", style=wx.RB_GROUP)
+		self.hideSyllableImg= wx.RadioButton(parent=self, id=-1, label="Hide characters")
+		self.hideDefinition= wx.RadioButton(parent=self, id=-1, label="Hide definition",)
 
+		self.toggleOptSizer.Add(self.noneRadio, proportion=0, flag=wx.ALL, border=20)
 		self.toggleOptSizer.Add(self.hideSyllableImg, proportion=0, flag=wx.ALL, border=20)
 		self.toggleOptSizer.Add(self.hideDefinition, proportion=0, flag=wx.ALL, border=20)
 
-		self.hideSyllableImg.Bind(wx.EVT_CHECKBOX, lambda evt :hideSyllableImgHandler(self, evt) )
 
-		self.hideDefinition.Bind(wx.EVT_CHECKBOX, lambda evt :hideDefinitionHandler(self, evt) )
+		self.hideSyllableImg.Bind(wx.EVT_RADIOBUTTON, lambda evt :hideSyllableImgHandler(self, evt) )
+
+		self.hideDefinition.Bind(wx.EVT_RADIOBUTTON, lambda evt :hideDefinitionHandler(self, evt) )
+
+		self.noneRadio.Bind(wx.EVT_RADIOBUTTON, lambda evt :resetToggleOpt(self, evt) )
 
 
 		tip="Hide english definition of the world"
@@ -107,12 +112,17 @@ class MainPanel(wx.Panel):
 		self.hideSyllableImg.SetToolTipString(tip)
 
 	def getImage(self, filename):
-		img = wx.Image(filename, wx.BITMAP_TYPE_PNG)
-
-		img=img.ConvertToBitmap()
+		img = wx.Image(filename, wx.BITMAP_TYPE_PNG).ConvertToBitmap()
 
 		mask = wx.Mask(img, wx.WHITE)
 		img.SetMask(mask)
+
+		"""
+		windowColour=self.GetBackgroundColour()
+		if self.hideSyllableImgFlag is False:
+		if self.hideSyllableImgFlag:
+			img.SetRGBRect( (0,0,img.GetWidth(),img.GetWidth()), windowColour[0],windowColour[1],windowColour[2])
+		"""
 
 		imgRes=wx.StaticBitmap(self, -1, img, (img.GetWidth(), img.GetHeight()))
 
