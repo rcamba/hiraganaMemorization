@@ -1,6 +1,16 @@
 import wx
 from random import choice as randChoice
 
+def searchBarHandler(self, evt):
+	if evt.GetEventObject().GetValue() in self.dictList:
+		self.searchBar.SetForegroundColour((0,0,0))#text color
+		self.searchBar.SetBackgroundColour((0,255,0))
+
+	else:
+		self.searchBar.SetForegroundColour((255,255,255))#text color
+		self.searchBar.SetBackgroundColour((255,0,0))
+
+
 def resetToggleOpt(self, evt, resetTargs=["def","sylImg"]):
 
 	if "def" in resetTargs:
