@@ -1,14 +1,29 @@
 import wx
 from random import choice as randChoice
 
+
 def searchBarHandler(self, evt):
+
 	if evt.GetEventObject().GetValue() in self.dictList:
-		self.searchBar.SetForegroundColour((0,0,0))#text color
+		#pass
 		self.searchBar.SetBackgroundColour((0,255,0))
+		self.searchBar.SetForegroundColour((0,0,0))#text color
 
 	else:
-		self.searchBar.SetForegroundColour((255,255,255))#text color
+		#pass
 		self.searchBar.SetBackgroundColour((255,0,0))
+		self.searchBar.SetForegroundColour((255,255,255))#text color
+		self.Refresh()
+
+
+def statsBtnHandler(evt):
+	print "Stats button"
+
+def changesDictBtnHandler(self, evt):
+	print "Change dict!"
+	self.parent.cdp.searchBar.SetValue("")
+	self.parent.cdp.Center()
+	self.parent.cdp.Show()
 
 
 def resetToggleOpt(self, evt, resetTargs=["def","sylImg"]):
@@ -38,14 +53,6 @@ def hideSyllableImgHandler(self, evt):
 		[img.Hide() for img in self.prevImgHolder+self.currImgHolder]
 		self.Layout()
 		self.hideSyllableImgFlag=True
-
-
-
-def statsBtnHandler(evt):
-	print "Stats button"
-
-def changesDictBtnHandler(evt):
-	print "Change dict"
 
 def handleClickInputBox(evt):
 	evt.GetEventObject().SetValue("")

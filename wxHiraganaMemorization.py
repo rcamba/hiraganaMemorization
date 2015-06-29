@@ -2,7 +2,7 @@ from ConfigParser import RawConfigParser
 from os import path
 import wx
 from evtHandler import *
-
+from ChangeDictFrame import ChangeDictFrame
 
 pathToModule=path.dirname(__file__)
 if len(pathToModule)==0:
@@ -201,7 +201,7 @@ class MainPanel(wx.Panel):
 		self.clickableOptSizer.Add(self.changeDict,proportion=0, flag=wx.ALL, border=20)
 
 		self.statsButton.Bind(wx.EVT_BUTTON, statsBtnHandler)
-		self.changeDict.Bind(wx.EVT_BUTTON, changesDictBtnHandler)
+		self.changeDict.Bind(wx.EVT_BUTTON, lambda evt :changesDictBtnHandler(self, evt))
 
 
 class MainFrame(wx.Frame):
@@ -210,9 +210,11 @@ class MainFrame(wx.Frame):
 		wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title="Hiragana Memorization", size=self.WindowSize, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER ^ wx.MAXIMIZE_BOX)#use default frame style but disable border resize and maximize
 
 		self.mp=MainPanel(self)
+		self.cdp=ChangeDictFrame(self)
+
 		self.Center()
 		self.Show()
-
+		self.cdp.Hide()
 
 if __name__ == "__main__":
 	app = wx.App(False)
