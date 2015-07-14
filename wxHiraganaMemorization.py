@@ -8,10 +8,10 @@ pathToModule=path.dirname(__file__)
 if len(pathToModule)==0:
 	pathToModule='.'
 
-
+#remove the first MainFrame and turn MainPanel to a MainFrame
 class MainPanel(wx.Panel):
 
-	def __init__(self, parent):
+	def __init__(self, parent, dictList):
 		self.parent=parent
 		wx.Panel.__init__(self, parent)
 
@@ -27,7 +27,7 @@ class MainPanel(wx.Panel):
 
 		self.currImgHolder=[]
 		self.prevImgHolder=[]
-		self.defaultDict=["verbs"]
+		self.dictList=dictList
 		self.wordDict=self.loadSymDicts()
 		self.hideSyllableImgFlag=False
 
@@ -79,7 +79,7 @@ class MainPanel(wx.Panel):
 		wordDict={}
 		temp={}
 
-		for file in self.defaultDict:
+		for file in self.dictList:
 			d=open( path.join(self.symDictPath,file) ).read().replace("\n","")
 			d=d.lower()
 			exec("temp="+"{"+d+"}")
@@ -208,9 +208,9 @@ class MainFrame(wx.Frame):
 	def __init__(self):
 		self.WindowSize=(1175,400)
 		wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title="Hiragana Memorization", size=self.WindowSize, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER ^ wx.MAXIMIZE_BOX)#use default frame style but disable border resize and maximize
-
-		self.mp=MainPanel(self)
-		self.cdp=ChangeDictFrame(self)
+		self.dictList=["verbs"]
+		self.mp=MainPanel(self, self.dictList)
+		self.cdp=ChangeDictFrame(self, self.dictList)
 
 		self.Center()
 		self.Show()
