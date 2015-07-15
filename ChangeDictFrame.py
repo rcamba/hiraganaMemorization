@@ -1,9 +1,8 @@
 import wx
-from evtHandler import searchBarHandler, unusedDictBoxHandler, insertDictBtnHandler, removeDictHandler
+from evtHandler import unused_sb_handler, unused_dlb_handler, curr_sb_handler, curr_dlb_handler, insertDictHandler, removeDictHandler
 class ChangeDictFrame(wx.Frame):
 
-	#renaming on unused/used?
-	def __init__(self, parent=None, dictList=[]):
+	def __init__(self, parent=None, unusedDicts=[], currDicts=[]):
 		self.parent=parent
 		self.WindowSize=(400,600)
 		self.LIST_BOX_SIZE=(100,200)
@@ -12,56 +11,53 @@ class ChangeDictFrame(wx.Frame):
 
 		self.topSizer = wx.BoxSizer(wx.VERTICAL)
 
-		self.all_container = wx.BoxSizer(wx.HORIZONTAL)
-		self.leftSizer = wx.BoxSizer(wx.VERTICAL)
+		self.main_container = wx.BoxSizer(wx.HORIZONTAL)
+		self.unusedDictSizer = wx.BoxSizer(wx.VERTICAL)
 		self.midButtonSizer = wx.BoxSizer(wx.VERTICAL)
-		self.rightSizer = wx.BoxSizer(wx.VERTICAL)
+		self.currDictSizer = wx.BoxSizer(wx.VERTICAL)
+		self.closeBtnSizer = wx.BoxSizer(wx.VERTICAL)
 
-		self.usedDictSizer = wx.BoxSizer(wx.VERTICAL)
+		self.currDicts=currDicts
+		self.unusedDicts = unusedDicts
 
-		self.dictList=dictList#temp, get from parent (which loads from config file)
-		self.addSearchBar()
-		self.addCloseBtn()
+		self.addUnusedDictsSearchBar()
 		self.addUnusedDictListBox()
 		self.addInsertRemoveButtons()
-		self.addUsedSearchBar()
-		self.addUsedDictLisBox()
+		self.addCurDictSearchBar()
+		self.addCurrDictListBox()
+		self.addCloseBtn()
 
+		self.main_container.Add(self.unusedDictSizer, flag=wx.ALIGN_CENTER | wx.EXPAND)
+		self.main_container.Add(self.midButtonSizer, flag=wx.ALIGN_CENTER)
+		self.main_container.Add(self.currDictSizer, flag=wx.ALIGN_CENTER | wx.EXPAND)
 
-		self.all_container.Add(self.leftSizer, flag=wx.ALIGN_CENTER | wx.EXPAND)
-		self.all_container.Add(self.midButtonSizer, flag=wx.ALIGN_CENTER)
-		self.all_container.Add(self.usedDictSizer, flag=wx.ALIGN_CENTER | wx.EXPAND)
-
-		ac_height = self.all_container.GetMinSize()[1]
-		self.topSizer.Add(self.all_container, flag=wx.ALIGN_CENTER | wx.TOP, border=(self.WindowSize[1]-ac_height)/2)
+		ac_height = self.main_container.GetMinSize()[1]
+		self.topSizer.Add(self.main_container, flag=wx.ALIGN_CENTER | wx.TOP, border=(self.WindowSize[1]-ac_height)/2)
 
 		self.topSizer.AddStretchSpacer()
-		self.topSizer.Add(self.rightSizer, flag=wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT)
+		self.topSizer.Add(self.closeBtnSizer, flag=wx.ALIGN_BOTTOM|wx.ALIGN_RIGHT)
 
 		self.SetSizer(self.topSizer)
 		self.Layout()
 
 		self.Bind(wx.EVT_CLOSE, self.closeChangeDict)
 
-	def addSearchBar(self):
-		self.searchBar=wx.TextCtrl(self)
+	def addUnusedDictsSearchBar(self):
 
-		self.searchBar.Bind(wx.EVT_TEXT, lambda evt :searchBarHandler(self, evt) )
+		self.unused_dict_search_bar=wx.TextCtrl(self)
+		self.unused_dict_search_bar.Bind(wx.EVT_TEXT, lambda evt :unused_sb_handler(self, evt) )
 
-		self.leftSizer.Add(self.searchBar, flag=wx.ALIGN_CENTER)
-
-	def addCloseBtn(self):
-		self.closeBtn=wx.Button(self, label="Close")
-		self.closeBtn.Bind(wx.EVT_BUTTON, lambda evt :self.closeChangeDict(evt))
-
-		self.rightSizer.Add(self.closeBtn, flag=wx.ALIGN_BOTTOM)
+		self.unusedDictSizer.Add(self.unused_dict_search_bar, flag=wx.ALIGN_CENTER)
 
 	def addUnusedDictListBox(self):
-		self.unusedDictBox=wx.ListBox(self, choices=self.dictList, size=self.LIST_BOX_SIZE, style=wx.LB_EXTENDED)
-		self.leftSizer.Add(self.unusedDictBox, flag=wx.ALIGN_CENTER)
-		self.unusedDictBox.Bind(wx.EVT_LISTBOX, lambda evt :unusedDictBoxHandler(self, evt) )
+
+		self.unused_dict_box=wx.ListBox(self, choices=self.unusedDicts, size=self.LIST_BOX_SIZE, style=wx.LB_EXTENDED)
+		self.unused_dict_box.Bind(wx.EVT_LISTBOX, lambda evt :unused_dlb_handler(self, evt) )
+
+		self.unusedDictSizer.Add(self.unused_dict_box, flag=wx.ALIGN_CENTER)
 
 	def addInsertRemoveButtons(self):
+
 		self.insertDictBtn=wx.Button(self, label=">>")
 		self.removeDictBtn=wx.Button(self, label="<<")
 
@@ -69,22 +65,28 @@ class ChangeDictFrame(wx.Frame):
 		self.midButtonSizer.Add(self.removeDictBtn, flag=wx.ALIGN_CENTER | wx.EXPAND)
 
 		self.removeDictBtn.Bind(wx.EVT_BUTTON, lambda evt :removeDictHandler(self, evt))
-		self.insertDictBtn.Bind(wx.EVT_BUTTON, lambda evt :insertDictBtnHandler(self, evt))
+		self.insertDictBtn.Bind(wx.EVT_BUTTON, lambda evt :insertDictHandler(self, evt))
 
-	def addUsedSearchBar(self):
-		self.usedSearchBar=wx.TextCtrl(self)
+	def addCurDictSearchBar(self):
 
-		#self.usedSearchBar.Bind(wx.EVT_TEXT, lambda evt :usedSearchBarHandler(self, evt) )
+		self.curr_dict_search_bar=wx.TextCtrl(self)
+		self.curr_dict_search_bar.Bind(wx.EVT_TEXT, lambda evt : curr_sb_handler(self, evt) )
 
-		self.usedDictSizer.Add(self.usedSearchBar, flag=wx.ALIGN_CENTER)
+		self.currDictSizer.Add(self.curr_dict_search_bar, flag=wx.ALIGN_CENTER)
 
-	def addUsedDictLisBox(self):
+	def addCurrDictListBox(self):
 
-		self.usedDictBox=wx.ListBox(self, choices=self.dictList, size=self.LIST_BOX_SIZE, style=wx.LB_EXTENDED)
+		self.curr_dict_box=wx.ListBox(self, choices=self.currDicts, size=self.LIST_BOX_SIZE, style=wx.LB_EXTENDED)
+		self.curr_dict_box.Bind(wx.EVT_LISTBOX, lambda evt :curr_dlb_handler(self, evt) )
 
-		#self.usedDictBox.Bind(wx.EVT_LISTBOX, lambda evt :usedDictBoxHandler(self, evt) )
+		self.currDictSizer.Add(self.curr_dict_box, flag=wx.ALIGN_CENTER)
 
-		self.usedDictSizer.Add(self.usedDictBox, flag=wx.ALIGN_CENTER)
+	def addCloseBtn(self):
+
+		self.closeBtn=wx.Button(self, label="Close")
+		self.closeBtn.Bind(wx.EVT_BUTTON, lambda evt :self.closeChangeDict(evt))
+
+		self.closeBtnSizer.Add(self.closeBtn, flag=wx.ALIGN_BOTTOM)
 
 	def closeChangeDict(self, evt):
 
