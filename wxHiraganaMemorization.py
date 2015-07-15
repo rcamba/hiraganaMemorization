@@ -8,12 +8,14 @@ pathToModule=path.dirname(__file__)
 if len(pathToModule)==0:
 	pathToModule='.'
 
-#remove the first MainFrame and turn MainPanel to a MainFrame
-class MainPanel(wx.Panel):
+class MainFrame(wx.Frame):
 
-	def __init__(self, parent, dictList):
-		self.parent=parent
-		wx.Panel.__init__(self, parent)
+	def __init__(self):
+		self.WindowSize=(1175,400)
+		wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title="Hiragana Memorization", size=self.WindowSize, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER ^ wx.MAXIMIZE_BOX)#use default frame style but disable border resize and maximize
+		self.fullDictList=["verbs","test"]
+		self.currDictList=["verbs"]
+		self.cdp=ChangeDictFrame(self, self.fullDictList, self.currDictList)
 
 		#self.confParser=RawConfigParser()
 		#self.configFile=pathToModule+"/../config.conf"
@@ -27,7 +29,6 @@ class MainPanel(wx.Panel):
 
 		self.currImgHolder=[]
 		self.prevImgHolder=[]
-		self.dictList=dictList
 		self.wordDict=self.loadSymDicts()
 		self.hideSyllableImgFlag=False
 
@@ -70,16 +71,20 @@ class MainPanel(wx.Panel):
 		self.SetSizer(self.topSizer)
 		self.Layout()
 
-		self.parent.Bind(wx.EVT_CLOSE, self.closeHandler)
+		self.Bind(wx.EVT_CLOSE, self.closeHandler)
+
+		self.Center()
+		self.Show()
+		self.cdp.Hide()
 
 	def closeHandler(self,evt=None):
-		self.parent.Destroy()
+		self.Destroy()
 
 	def loadSymDicts(self):
 		wordDict={}
 		temp={}
 
-		for file in self.dictList:
+		for file in self.currDictList:
 			d=open( path.join(self.symDictPath,file) ).read().replace("\n","")
 			d=d.lower()
 			exec("temp="+"{"+d+"}")
@@ -89,9 +94,9 @@ class MainPanel(wx.Panel):
 
 	def addToggleOptions(self):
 
-		self.noneRadio= wx.RadioButton(parent=self, id=-1, label="None", style=wx.RB_GROUP)
-		self.hideSyllableImg= wx.RadioButton(parent=self, id=-1, label="Hide characters")
-		self.hideDefinition= wx.RadioButton(parent=self, id=-1, label="Hide definition",)
+		self.noneRadio= wx.RadioButton(self, id=-1, label="None", style=wx.RB_GROUP)
+		self.hideSyllableImg= wx.RadioButton(self, id=-1, label="Hide characters")
+		self.hideDefinition= wx.RadioButton(self, id=-1, label="Hide definition",)
 
 		self.toggleOptSizer.Add(self.noneRadio, proportion=0, flag=wx.ALL, border=20)
 		self.toggleOptSizer.Add(self.hideSyllableImg, proportion=0, flag=wx.ALL, border=20)
@@ -202,19 +207,6 @@ class MainPanel(wx.Panel):
 
 		self.statsButton.Bind(wx.EVT_BUTTON, statsBtnHandler)
 		self.changeDict.Bind(wx.EVT_BUTTON, lambda evt :changesDictBtnHandler(self, evt))
-
-
-class MainFrame(wx.Frame):
-	def __init__(self):
-		self.WindowSize=(1175,400)
-		wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title="Hiragana Memorization", size=self.WindowSize, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER ^ wx.MAXIMIZE_BOX)#use default frame style but disable border resize and maximize
-		self.dictList=["verbs"]
-		self.mp=MainPanel(self, self.dictList)
-		self.cdp=ChangeDictFrame(self, self.dictList)
-
-		self.Center()
-		self.Show()
-		self.cdp.Hide()
 
 if __name__ == "__main__":
 	app = wx.App(False)
