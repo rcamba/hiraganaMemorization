@@ -119,16 +119,6 @@ class MainFrame(wx.Frame):
 	def getImage(self, filename):
 		img = wx.Image(filename, wx.BITMAP_TYPE_PNG).ConvertToBitmap()
 
-		mask = wx.Mask(img, wx.WHITE)
-		img.SetMask(mask)
-
-		"""
-		windowColour=self.GetBackgroundColour()
-		if self.hideSyllableImgFlag is False:
-		if self.hideSyllableImgFlag:
-			img.SetRGBRect( (0,0,img.GetWidth(),img.GetWidth()), windowColour[0],windowColour[1],windowColour[2])
-		"""
-
 		imgRes=wx.StaticBitmap(self, -1, img, (img.GetWidth(), img.GetHeight()))
 
 		return imgRes
