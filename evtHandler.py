@@ -3,10 +3,26 @@ import re
 from random import choice as randChoice
 
 def insertDictHandler(self, evt):
-	print "insertDictBtnHandler"
+	selection = list(self.unused_dict_box.GetSelections())
+	selection.reverse()
+
+	for s in selection:
+		item = self.unusedDicts.pop(s)
+		self.currDicts.append(item)
+
+	self.unused_dict_box.Set(self.unusedDicts)
+	self.curr_dict_box.Set(self.currDicts)
 
 def removeDictHandler(self, evt):
-	print "removeDictHandler"
+	selection = list(self.curr_dict_box.GetSelections())
+	selection.reverse()
+
+	for s in selection:
+		item = self.currDicts.pop(s)
+		self.unusedDicts.append(item)
+
+	self.unused_dict_box.Set(self.unusedDicts)
+	self.curr_dict_box.Set(self.currDicts)
 
 def curr_sb_handler(self, evt):
 	pass
