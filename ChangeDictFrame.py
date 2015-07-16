@@ -111,7 +111,9 @@ class ChangeDictFrame(wx.Frame):
 		if self.parent == None:
 			self.Destroy()
 		else:
+			self.parent.loadSymDicts()
 			self.Hide()
+
 
 if __name__ == "__main__":
 	app = wx.App(False)

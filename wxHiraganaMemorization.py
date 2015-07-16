@@ -1,21 +1,23 @@
 from ConfigParser import RawConfigParser
 from os import path
 import wx
-from evtHandler import *
+from evtHandler import statsBtnHandler, changesDictBtnHandler, resetToggleOpt, hideDefinitionHandler, hideSyllableImgHandler, handleClickInputBox, handleInput
 from ChangeDictFrame import ChangeDictFrame
+from random import choice as randChoice
 
 pathToModule=path.dirname(__file__)
 if len(pathToModule)==0:
 	pathToModule='.'
 
+#add timer?
 class MainFrame(wx.Frame):
 
 	def __init__(self):
 		self.WindowSize=(1175,400)
 		wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title="Hiragana Memorization", size=self.WindowSize, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER ^ wx.MAXIMIZE_BOX)#use default frame style but disable border resize and maximize
-		self.fullDictList=["verbs","test"]
-		self.currDictList=["verbs"]
-		self.cdp=ChangeDictFrame(self, self.fullDictList, self.currDictList)
+		self.unusedDicts=["test"]
+		self.currDicts=["verbs"]
+		self.cdp=ChangeDictFrame(self, self.unusedDicts, self.currDicts)
 
 		#self.confParser=RawConfigParser()
 		#self.configFile=pathToModule+"/../config.conf"
@@ -29,7 +31,8 @@ class MainFrame(wx.Frame):
 
 		self.currImgHolder=[]
 		self.prevImgHolder=[]
-		self.wordDict=self.loadSymDicts()
+
+		self.loadSymDicts()
 		self.hideSyllableImgFlag=False
 
 		self.topSizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -81,16 +84,13 @@ class MainFrame(wx.Frame):
 		self.Destroy()
 
 	def loadSymDicts(self):
-		wordDict={}
 		temp={}
-
-		for file in self.currDictList:
+		self.wordDict={}
+		for file in self.currDicts:
 			d=open( path.join(self.symDictPath,file) ).read().replace("\n","")
 			d=d.lower()
 			exec("temp="+"{"+d+"}")
-			wordDict.update(temp)
-
-		return wordDict
+			self.wordDict.update(temp)
 
 	def addToggleOptions(self):
 

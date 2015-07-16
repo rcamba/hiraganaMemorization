@@ -13,6 +13,7 @@ def insertDictHandler(self, evt):
 	self.unused_dict_box.Set(self.unusedDicts)
 	self.curr_dict_box.Set(self.currDicts)
 
+
 def removeDictHandler(self, evt):
 	selection = list(self.curr_dict_box.GetSelections())
 	selection.reverse()
@@ -23,6 +24,7 @@ def removeDictHandler(self, evt):
 
 	self.unused_dict_box.Set(self.unusedDicts)
 	self.curr_dict_box.Set(self.currDicts)
+
 
 def curr_sb_handler(self, evt):
 	pass
@@ -109,8 +111,24 @@ def handleInput(self, evt):
 		nextPrevImgBox(self, evt)
 		nextCurrImgBox(self, evt)
 
+def generateCorrectAns(currWord):
+	correctAns=""
+	vowels=['a','e','o','i','u']
+	tokens=currWord.split('-')
+	for i in range(0,len(tokens)):
+
+		if tokens[i]=="minitsu":
+			if i<len(tokens)-1 and tokens[i+1][0] not in vowels:
+				correctAns=correctAns+tokens[i+1][0]
+			else:
+				raise ValueError("Last syllable can't be a Sokuon(little tsu) and must not be a vowel" + ". Tokens="+ str(tokens))
+		else:
+			correctAns=correctAns+tokens[i]
+
+	return correctAns
+
 def checkAns(self, userAns):
-	correctAns=self.currWord.replace("-","")
+	correctAns=generateCorrectAns(self.currWord)
 	if userAns==correctAns:
 		print "Correct"
 	else:
@@ -131,7 +149,6 @@ def nextPrevImgBox(self, evt):
 	self.drawWord(fileList, self.prevImgSizer, self.prevImgHolder, hidden=True)
 
 
-
 def nextCurrImgBox(self, evt):
 
 	self.currWord=randChoice(self.wordDict.keys())
@@ -147,57 +164,3 @@ def nextCurrImgBox(self, evt):
 
 	self.drawWord(fileList, self.currImgSizer, self.currImgHolder, hidden=True)
 
-
-'''
-
-def correctAnsForFileList(fileList):
-
-	word=""
-	vowels=['a','e','o','i','u']
-
-	for i in range (0,len(fileList)) :
-		fileList[i]=fileList[i].replace(".png","")
-
-		if fileList[i]=="minitsu":
-			if i<len(fileList)-1:
-				if fileList[i+1][0] not in vowels:
-					word=word+(fileList[i+1][0])
-				else:
-					raise ValueError("Last syllable must not be a vowel")
-			else:
-				raise ValueError("Last syllable can't be a Sokuon(little tsu)")
-
-		else:
-			word=word+(fileList[i])
-
-	return word
-
-def updatePrevImgBox(self, evt):
-	#self.prevImgSizer.Clear()
-	#self.prevImgNLabelSizer.Layout()
-	#self.imgBoxSizer.Layout()
-
-	fileList=fileListForWord(self.prevWord)
-	for filename in fileList:
-			self.drawImage(filename, self.prevImgSizer)
-	for i in self.prevImgHolder[:]:
-		i.Show()
-	self.prevImgSizer.Layout()
-	self.prevImgNLabelSizer.Layout()
-	self.imgBoxSizer.Layout()
-	self.Layout()
-
-
-def checkForCorrectAns(self, evt):
-	print evt.GetEventObject().GetValue()
-	from string import replace
-	eList=map(lambda x: x.replace(".png",""),fileListForWord(self.prevWord))
-	rStr="".join(eList)
-	print rStr
-	evt.GetEventObject().SetValue("")
-
-
-
-
-
-'''
