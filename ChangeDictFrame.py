@@ -64,7 +64,9 @@ class ChangeDictFrame(wx.Frame):
 	def addUnusedDictListBox(self):
 
 		self.unused_dict_box=wx.ListBox(self, choices=self.unusedDicts, size=self.LIST_BOX_SIZE, style=wx.LB_EXTENDED)
-		self.unused_dict_box.Bind(wx.EVT_LISTBOX, lambda evt :unused_dlb_handler(self, evt) )
+
+		self.unused_dict_box.Bind(wx.EVT_LISTBOX, lambda evt :unused_dlb_handler(self, evt))
+		self.unused_dict_box.Bind(wx.EVT_LISTBOX_DCLICK, lambda evt :insertDictHandler(self, evt))
 
 		self.unusedDictSizer.Add(self.unused_dict_box, flag=wx.ALIGN_CENTER)
 
@@ -95,7 +97,9 @@ class ChangeDictFrame(wx.Frame):
 	def addCurrDictListBox(self):
 
 		self.curr_dict_box=wx.ListBox(self, choices=self.currDicts, size=self.LIST_BOX_SIZE, style=wx.LB_EXTENDED)
-		self.curr_dict_box.Bind(wx.EVT_LISTBOX, lambda evt :curr_dlb_handler(self, evt) )
+
+		self.curr_dict_box.Bind(wx.EVT_LISTBOX, lambda evt :curr_dlb_handler(self, evt))
+		self.curr_dict_box.Bind(wx.EVT_LISTBOX_DCLICK, lambda evt :removeDictHandler(self, evt))
 
 		self.currDictSizer.Add(self.curr_dict_box, flag=wx.ALIGN_CENTER)
 
