@@ -106,10 +106,15 @@ def handleInput(self, evt):
 
 	if userAns=="quit" or userAns=="exit":
 		self.closeHandler()
+
+	elif self.LAST:
+		print "No words remaining"
+
 	else:
 		checkAns(self, userAns)
 		nextPrevImgBox(self, evt)
 		nextCurrImgBox(self, evt)
+
 
 def generateCorrectAns(currWord):
 	correctAns=""
@@ -126,6 +131,7 @@ def generateCorrectAns(currWord):
 			correctAns=correctAns+tokens[i]
 
 	return correctAns
+
 
 def checkAns(self, userAns):
 	correctAns=generateCorrectAns(self.currWord)
@@ -151,16 +157,25 @@ def nextPrevImgBox(self, evt):
 
 def nextCurrImgBox(self, evt):
 
-	self.currWord=randChoice(self.wordDict.keys())
-	self.definition=self.wordDict[self.currWord]
-	self.wordDict.pop(self.currWord)
+	if len(self.wordDict)>0:
+		self.currWord=randChoice(self.wordDict.keys())
+		self.definition=self.wordDict[self.currWord]
+		self.wordDict.pop(self.currWord)
 
-	self.currWordLabel.SetLabel(self.definition)
+		self.currWordLabel.SetLabel(self.definition)
 
-	fileList=self.fileListForWord(self.currWord)
+		fileList=self.fileListForWord(self.currWord)
 
-	[img.Destroy() for img in self.currImgHolder]
-	self.currImgHolder=[]
+		[img.Destroy() for img in self.currImgHolder]
+		self.currImgHolder=[]
 
-	self.drawWord(fileList, self.currImgSizer, self.currImgHolder, hidden=True)
+		self.drawWord(fileList, self.currImgSizer, self.currImgHolder, hidden=True)
 
+	else:
+		[img.Hide() for img in self.prevImgHolder]
+		[img.Hide() for img in self.currImgHolder]
+
+		self.currWordLabel.SetLabel("")
+		self.prevWordLabel.SetLabel("No words remaining")
+		self.LAST=True
+		self.Layout()

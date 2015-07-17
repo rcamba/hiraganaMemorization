@@ -28,6 +28,7 @@ class MainFrame(wx.Frame):
 		self.symImgPath=path.join(pathToModule,"symImg")
 		self.currWord=""
 		self.definition=""
+		self.LAST=False
 
 		self.currImgHolder=[]
 		self.prevImgHolder=[]
