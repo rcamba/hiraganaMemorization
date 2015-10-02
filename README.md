@@ -8,7 +8,7 @@ http://www.wxpython.org/download.php
 
 Installation
 -------------
-None required. Just run wxHiraganaMemorization.py
+None required. Just run launchHiraganaMemorization.py
 
 
 Screenshots
