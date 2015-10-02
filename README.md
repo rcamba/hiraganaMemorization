@@ -18,6 +18,7 @@ Screenshots
 
 WIP:
 ------
+Move answer feedback from command line in to program  
 Scoring + statistics  
 More dictionaries and words  
 More native look on Windows platforms (use wx.Panel instead of wx.Frame)  
