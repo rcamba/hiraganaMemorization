@@ -13,6 +13,8 @@ def insertDictHandler(self, evt):
 	self.unused_dict_box.Set(self.unusedDicts)
 	self.curr_dict_box.Set(self.currDicts)
 
+	self.parent.LAST=False
+
 
 def removeDictHandler(self, evt):
 	selection = list(self.curr_dict_box.GetSelections())
@@ -24,6 +26,8 @@ def removeDictHandler(self, evt):
 
 	self.unused_dict_box.Set(self.unusedDicts)
 	self.curr_dict_box.Set(self.currDicts)
+
+	self.parent.LAST=False
 
 
 def curr_sb_handler(self, evt):
@@ -107,13 +111,13 @@ def handleInput(self, evt):
 	if userAns=="quit" or userAns=="exit":
 		self.closeHandler()
 
-	elif self.LAST:
-		print "No words remaining"
-
-	else:
+	elif self.LAST is False:
 		checkAns(self, userAns)
 		nextPrevImgBox(self, evt)
 		nextCurrImgBox(self, evt)
+
+	else:
+		print "No words remaining"
 
 
 def generateCorrectAns(currWord):
