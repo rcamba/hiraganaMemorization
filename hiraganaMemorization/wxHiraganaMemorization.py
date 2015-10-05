@@ -10,11 +10,13 @@ if len(pathToModule)==0:
 	pathToModule='.'
 
 #add timer?
-class MainFrame(wx.Frame):
 
-	def __init__(self):
-		self.WindowSize=(1175,400)
-		wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title="Hiragana Memorization", size=self.WindowSize, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER ^ wx.MAXIMIZE_BOX)#use default frame style but disable border resize and maximize
+class MainPanel(wx.Panel):
+
+	def __init__(self, parent):
+		self.parent = parent
+		self.WindowSize = self.parent.WindowSize
+		wx.Panel.__init__(self, parent)
 		self.unusedDicts=["test"]
 		self.currDicts=["verbs"]
 		self.cdp=ChangeDictFrame(self, self.unusedDicts, self.currDicts)
@@ -77,8 +79,7 @@ class MainFrame(wx.Frame):
 
 		self.Bind(wx.EVT_CLOSE, self.closeHandler)
 
-		self.Center()
-		self.Show()
+
 		self.cdp.Hide()
 
 	def closeHandler(self,evt=None):
@@ -198,6 +199,15 @@ class MainFrame(wx.Frame):
 
 		self.statsButton.Bind(wx.EVT_BUTTON, statsBtnHandler)
 		self.changeDict.Bind(wx.EVT_BUTTON, lambda evt :changesDictBtnHandler(self, evt))
+
+class MainFrame(wx.Frame):
+	def __init__(self):
+		self.WindowSize=(1175,400)
+		wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title="Hiragana Memorization", size=self.WindowSize, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER ^ wx.MAXIMIZE_BOX)#use default frame style but disable border resize and maximize
+
+		self.mp = MainPanel(self)
+		self.Center()
+		self.Show()
 
 if __name__ == "__main__":
 	app = wx.App(False)
