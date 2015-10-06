@@ -1,15 +1,16 @@
 import wx
 from evtHandler import unused_sb_handler, unused_dlb_handler, curr_sb_handler, curr_dlb_handler, insertDictHandler, removeDictHandler
-class ChangeDictFrame(wx.Frame):
 
-	def __init__(self, parent=None, unusedDicts=[], currDicts=[]):
+class ChangeDictPanel(wx.Panel):
+
+	def __init__(self, parent, unusedDicts=[], currDicts=[]):
 		self.parent=parent
 		self.WindowSize=(400,600)
 		self.LIST_BOX_SIZE=(100,200)
 		self.LABEL_FONT_SIZE=12
 		self.WX_FONT=wx.Font(self.LABEL_FONT_SIZE, wx.DEFAULT, wx.NORMAL, wx.NORMAL)
 
-		wx.Frame.__init__(self, parent, title="Change dictionary", size=self.WindowSize)
+		wx.Panel.__init__(self, parent)
 
 		self.topSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -45,8 +46,7 @@ class ChangeDictFrame(wx.Frame):
 
 		self.SetSizer(self.topSizer)
 		self.Layout()
-
-		self.Bind(wx.EVT_CLOSE, self.closeChangeDict)
+		self.Show()
 
 	def addUnusedDictsLabel(self):
 
@@ -106,9 +106,23 @@ class ChangeDictFrame(wx.Frame):
 	def addCloseBtn(self):
 
 		self.closeBtn=wx.Button(self, label="Close")
-		self.closeBtn.Bind(wx.EVT_BUTTON, lambda evt :self.closeChangeDict(evt))
+		self.closeBtn.Bind(wx.EVT_BUTTON, lambda evt :self.parent.closeChangeDict(evt))
 
 		self.closeBtnSizer.Add(self.closeBtn, flag=wx.ALIGN_BOTTOM)
+
+
+class ChangeDictFrame(wx.Frame):
+
+	def __init__(self, parent=None, unusedDicts=[], currDicts=[]):
+		self.parent=parent
+		self.WindowSize=(400,600)
+
+
+		wx.Frame.__init__(self, parent, title="Change dictionary", size=self.WindowSize)
+
+		self.cdp = ChangeDictPanel(self, unusedDicts, currDicts)
+		self.unused_dict_search_bar = self.cdp.unused_dict_search_bar
+		self.Bind(wx.EVT_CLOSE, self.closeChangeDict)
 
 	def closeChangeDict(self, evt):
 
@@ -117,7 +131,6 @@ class ChangeDictFrame(wx.Frame):
 		else:
 			self.parent.loadSymDicts()
 			self.Hide()
-
 
 if __name__ == "__main__":
 	app = wx.App(False)
