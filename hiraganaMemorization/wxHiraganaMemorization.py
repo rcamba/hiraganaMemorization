@@ -19,7 +19,7 @@ class MainPanel(wx.Panel):
 		wx.Panel.__init__(self, parent)
 		self.unusedDicts=["test"]
 		self.currDicts=["verbs"]
-		self.cdp=ChangeDictFrame(self, self.unusedDicts, self.currDicts)
+		self.cdf=ChangeDictFrame(self, self.unusedDicts, self.currDicts)
 
 		#self.confParser=RawConfigParser()
 		#self.configFile=pathToModule+"/../config.conf"
@@ -80,7 +80,7 @@ class MainPanel(wx.Panel):
 		self.Bind(wx.EVT_CLOSE, self.closeHandler)
 
 
-		self.cdp.Hide()
+		self.cdf.Hide()
 
 	def closeHandler(self,evt=None):
 		self.Destroy()
