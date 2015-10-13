@@ -22,6 +22,9 @@ class MainFrame(wx.Frame):
 		#self.confParser=RawConfigParser()
 		#self.configFile=pathToModule+"/../config.conf"
 		#self.confParser.read(self.configFile)
+		self.TEXTBOX_FONT=self.TEXTBOX_FONT = wx.Font(
+			pointSize=16, family=wx.FONTFAMILY_DEFAULT,
+			style=wx.FONTSTYLE_NORMAL, weight=wx.FONTWEIGHT_NORMAL)
 		self.imgBoxSize=(800,100)
 		self.inputTxtSize=(800,32)
 		self.symDictPath=path.join(pathToModule,"symDicts")
@@ -185,7 +188,7 @@ class MainFrame(wx.Frame):
 		self.inputTxt.Bind(wx.EVT_SET_FOCUS, handleClickInputBox)
 
 		self.inputTxt.SetFocus()
-
+		self.inputTxt.SetFont(self.TEXTBOX_FONT)
 		self.inputTxtSizer.Add(self.inputTxt, proportion=0, flag=wx.ALL, border=25)
 
 
@@ -193,8 +196,8 @@ class MainFrame(wx.Frame):
 		self.statsButton=wx.Button(self, label="View Statistics")
 		self.changeDict=wx.Button(self, label="Change dictionary")
 
-		self.clickableOptSizer.Add(self.statsButton ,proportion=0, flag=wx.ALL, border=20)
-		self.clickableOptSizer.Add(self.changeDict,proportion=0, flag=wx.ALL, border=20)
+		self.clickableOptSizer.Add(self.statsButton, proportion=0, flag=wx.ALL, border=20)
+		self.clickableOptSizer.Add(self.changeDict, proportion=0, flag=wx.ALL, border=20)
 
 		self.statsButton.Bind(wx.EVT_BUTTON, statsBtnHandler)
 		self.changeDict.Bind(wx.EVT_BUTTON, lambda evt :changesDictBtnHandler(self, evt))
