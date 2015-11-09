@@ -1,6 +1,7 @@
 from ConfigParser import RawConfigParser
 from os import path
 import wx
+from wx.lib.agw.genericmessagedialog import GenericMessageDialog as GMD
 from evtHandler import statsBtnHandler, changeDictHandler, resetToggleOpt, hideDefinitionHandler, hideSyllableImgHandler, handleClickInputBox, handleInput
 from ChangeDictFrame import ChangeDictFrame
 from random import choice as randChoice
@@ -141,6 +142,25 @@ class MainPanel(wx.Panel):
 
 		self.inputTxtSizer.Add(self.inputTxt, proportion=0, flag=wx.ALL, border=25)
 
+	def displayAlert(self, alertMsg):
+
+		"""
+		Displays warning message as a popup
+
+		arguments:
+				alertMsg -- message to display in dialog message box
+
+		no return value
+		"""
+
+		self.alertDlg = GMD(
+			parent=self, message=alertMsg, caption="Alert!",
+			agwStyle=wx.OK | wx.ICON_EXCLAMATION)
+
+		self.alertDlg.ShowModal()
+		if self.alertDlg:
+			self.alertDlg.Destroy()
+
 
 class MainFrame(wx.Frame):
 	def __init__(self):
@@ -149,6 +169,7 @@ class MainFrame(wx.Frame):
 
 		self.HIDE_DEFINITION_ID = 1
 		self.CHANGE_DICT_ID = 2
+		self.VIEW_STATS_ID = 3
 
 		self.mp = MainPanel(self)
 
@@ -156,6 +177,7 @@ class MainFrame(wx.Frame):
 		self.addHideDefOption()
 		self.gameOptionsMenu.AppendSeparator()
 		self.addChangeDictOption()
+		self.addViewStats()
 
 		self.Center()
 		self.Show()
@@ -163,7 +185,9 @@ class MainFrame(wx.Frame):
 	def addMenuBar(self):
 		self.menuBar = wx.MenuBar()
 		self.gameOptionsMenu = wx.Menu()
+		self.statisticsMenu = wx.Menu()
 		self.menuBar.Append(self.gameOptionsMenu, "Game Op&tions")
+		self.menuBar.Append(self.statisticsMenu, "&Statistics")
 		self.SetMenuBar(self.menuBar)
 
 	def addHideDefOption(self):
@@ -176,6 +200,11 @@ class MainFrame(wx.Frame):
 		self.changeDictMenuItem = wx.MenuItem(self.gameOptionsMenu, self.CHANGE_DICT_ID, "Change &dictionary\tCtrl+D")
 		self.gameOptionsMenu.AppendItem(self.changeDictMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: changeDictHandler(self.mp), id=self.CHANGE_DICT_ID)
+
+	def addViewStats(self):
+		self.viewStatsMenuItem = wx.MenuItem(self.statisticsMenu, self.VIEW_STATS_ID, "&View stats")
+		self.statisticsMenu.AppendItem(self.viewStatsMenuItem)
+		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.VIEW_STATS_ID)
 
 if __name__ == "__main__":
 	app = wx.App(False)
