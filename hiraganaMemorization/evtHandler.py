@@ -66,9 +66,9 @@ def statsBtnHandler(evt):
 
 def changesDictBtnHandler(self, evt):
 	print "Change dict!"
-	self.cdp.unused_dict_search_bar.SetValue("")
-	self.cdp.Center()
-	self.cdp.Show()
+	self.cdf.unused_dict_search_bar.SetValue("")
+	self.cdf.Center()
+	self.cdf.Show()
 
 
 def resetToggleOpt(self, evt, resetTargs=["def","sylImg"]):
