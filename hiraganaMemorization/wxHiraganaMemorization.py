@@ -170,14 +170,15 @@ class MainFrame(wx.Frame):
 		self.HIDE_DEFINITION_ID = 1
 		self.CHANGE_DICT_ID = 2
 		self.VIEW_STATS_ID = 3
+		self.RESET_STATS_ID = 4
 
 		self.mp = MainPanel(self)
 
 		self.addMenuBar()
 		self.addHideDefOption()
-		self.gameOptionsMenu.AppendSeparator()
 		self.addChangeDictOption()
 		self.addViewStats()
+		self.addResetStats()
 
 		self.Center()
 		self.Show()
@@ -196,6 +197,8 @@ class MainFrame(wx.Frame):
 		self.hideDefinitionMenuItem.Check(False)
 		self.Bind(wx.EVT_MENU, lambda evt: hideDefinitionHandler(self, self.mp), id=self.HIDE_DEFINITION_ID)
 
+		self.gameOptionsMenu.AppendSeparator()
+
 	def addChangeDictOption(self):
 		self.changeDictMenuItem = wx.MenuItem(self.gameOptionsMenu, self.CHANGE_DICT_ID, "Change &dictionary\tCtrl+D")
 		self.gameOptionsMenu.AppendItem(self.changeDictMenuItem)
@@ -205,6 +208,13 @@ class MainFrame(wx.Frame):
 		self.viewStatsMenuItem = wx.MenuItem(self.statisticsMenu, self.VIEW_STATS_ID, "&View stats")
 		self.statisticsMenu.AppendItem(self.viewStatsMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.VIEW_STATS_ID)
+
+		self.statisticsMenu.AppendSeparator()
+
+	def addResetStats(self):
+		self.resetStatsMenuItem = wx.MenuItem(self.statisticsMenu, self.RESET_STATS_ID, "Reset stats")
+		self.statisticsMenu.AppendItem(self.resetStatsMenuItem)
+		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.RESET_STATS_ID)
 
 if __name__ == "__main__":
 	app = wx.App(False)
