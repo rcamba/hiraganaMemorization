@@ -70,19 +70,6 @@ def changeDictHandler(panel):
 	panel.cdf.Show()
 
 
-def resetToggleOpt(self, evt, resetTargs=["def","sylImg"]):
-
-	if "def" in resetTargs:
-		self.currWordLabel.Show()
-		self.prevWordLabel.Show()
-		self.Layout()
-
-	if "sylImg" in resetTargs:
-		[img.Show() for img in self.prevImgHolder+self.currImgHolder]
-		self.Layout()
-		self.hideSyllableImgFlag=False
-
-
 def hideDefinitionHandler(frame, panel):
 	if frame.hideDefinitionMenuItem.IsChecked():
 		frame.hideDefinitionMenuItem.Check()
@@ -96,12 +83,6 @@ def hideDefinitionHandler(frame, panel):
 
 	panel.Layout()
 
-def hideSyllableImgHandler(self, evt):
-	resetToggleOpt(self, evt, ["def"])
-	if evt.GetEventObject().GetValue():
-		[img.Hide() for img in self.prevImgHolder+self.currImgHolder]
-		self.Layout()
-		self.hideSyllableImgFlag=True
 
 def handleClickInputBox(evt):
 	evt.GetEventObject().SetValue("")
