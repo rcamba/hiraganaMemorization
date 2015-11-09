@@ -79,7 +79,7 @@ class MainPanel(wx.Panel):
 		self.cdf.Hide()
 
 	def closeHandler(self,evt=None):
-		self.Destroy()
+		self.parent.Destroy()
 
 	def loadSymDicts(self):
 		temp = {}
