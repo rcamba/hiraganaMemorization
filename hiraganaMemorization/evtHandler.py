@@ -2,6 +2,7 @@ import wx
 import re
 from random import choice as randChoice
 
+
 def insertDictHandler(self, evt):
 	selection = list(self.unused_dict_box.GetSelections())
 	selection.reverse()
@@ -44,7 +45,6 @@ def unused_sb_handler(self, evt):
 	if evt.GetEventObject().GetValue() in self.unusedDicts:
 		#pass
 
-
 		self.unused_dict_search_bar.SetBackgroundColour((0,255,0))
 		self.unused_dict_search_bar.SetForegroundColour((0,0,0))#text color
 
@@ -60,9 +60,6 @@ def unused_sb_handler(self, evt):
 
 	self.Refresh()
 
-
-def statsBtnHandler(evt):
-	print "Stats button"
 
 def changeDictHandler(panel):
 	panel.cdf.unused_dict_search_bar.SetValue("")
@@ -87,6 +84,7 @@ def hideDefinitionHandler(frame, panel):
 def handleClickInputBox(evt):
 	evt.GetEventObject().SetValue("")
 	evt.GetEventObject().SetFocus()
+
 
 def handleInput(self, evt):
 	userAns=evt.GetEventObject().GetValue()

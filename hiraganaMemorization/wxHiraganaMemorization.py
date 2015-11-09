@@ -3,7 +3,7 @@ from os import path
 
 import wx
 from wx.lib.agw.genericmessagedialog import GenericMessageDialog as GMD
-from evtHandler import statsBtnHandler, changeDictHandler, hideDefinitionHandler, handleClickInputBox, handleInput
+from evtHandler import changeDictHandler, hideDefinitionHandler, handleClickInputBox, handleInput
 
 from ChangeDictFrame import ChangeDictFrame
 from random import choice as randChoice
