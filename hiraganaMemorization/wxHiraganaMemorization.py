@@ -103,7 +103,7 @@ class MainPanel(wx.Panel):
 		self.Layout()
 
 	def fileListForWord(self, word):
-		return [syllable.lower() + ".png" for syllable in word.split('-')]
+		return [syllable.capitalize()+".png" for syllable in word.split('-')]
 
 	def addCurrImgBox(self):
 		self.currWord = randChoice(self.wordDict.keys())
