@@ -1,8 +1,10 @@
 from ConfigParser import RawConfigParser
 from os import path
+
 import wx
 from wx.lib.agw.genericmessagedialog import GenericMessageDialog as GMD
 from evtHandler import statsBtnHandler, changeDictHandler, hideDefinitionHandler, handleClickInputBox, handleInput
+
 from ChangeDictFrame import ChangeDictFrame
 from random import choice as randChoice
 
@@ -57,7 +59,7 @@ class MainPanel(wx.Panel):
 		self.addInputTxt()
 
 		self.imgBoxSizer.Add(self.prevImgNLabelSizer, flag=wx.ALIGN_CENTRE)
-
+		self.imgBoxSizer.AddSpacer(20)
 		self.imgBoxSizer.Add(self.currImgNLabelSizer, flag=wx.ALIGN_CENTRE)
 		self.imgBoxSizer.Add(self.inputTxtSizer, flag=wx.ALIGN_CENTRE)
 
@@ -164,7 +166,7 @@ class MainPanel(wx.Panel):
 
 class MainFrame(wx.Frame):
 	def __init__(self):
-		self.WindowSize = (1175,400)
+		self.WindowSize = (1175, 450)
 		wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title="Hiragana Memorization", size=self.WindowSize, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER ^ wx.MAXIMIZE_BOX)#use default frame style but disable border resize and maximize
 
 		self.HIDE_DEFINITION_ID = 1
