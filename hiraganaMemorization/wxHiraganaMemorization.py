@@ -41,8 +41,6 @@ class MainPanel(wx.Panel):
 
 		self.topSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-		self.toggleOptSizer = wx.BoxSizer(wx.VERTICAL)
-
 		self.prevImgSizer = wx.BoxSizer(wx.HORIZONTAL)
 		self.prevImgNLabelSizer = wx.BoxSizer(wx.VERTICAL)
 
@@ -51,26 +49,18 @@ class MainPanel(wx.Panel):
 
 		self.imgBoxSizer = wx.BoxSizer(wx.VERTICAL)
 
-		self.clickableOptSizer = wx.BoxSizer(wx.VERTICAL)
-
 		self.inputTxtSizer = wx.BoxSizer(wx.HORIZONTAL)
 
-		self.addToggleOptions()
 		self.addPrevImgBox()
 		self.addCurrImgBox()
 		self.addInputTxt()
-		self.addClickableOptions()
-
-		self.topSizer.Add(self.toggleOptSizer)
 
 		self.imgBoxSizer.Add(self.prevImgNLabelSizer, flag=wx.ALIGN_CENTRE)
-		self.imgBoxSizer.AddSpacer(20)
 
 		self.imgBoxSizer.Add(self.currImgNLabelSizer, flag=wx.ALIGN_CENTRE)
 		self.imgBoxSizer.Add(self.inputTxtSizer, flag=wx.ALIGN_CENTRE)
 
-		self.topSizer.Add(self.imgBoxSizer, flag=wx.ALIGN_CENTRE)
-		self.topSizer.Add(self.clickableOptSizer)
+		self.topSizer.Add(self.imgBoxSizer, proportion=1, flag=wx.ALIGN_CENTRE)
 
 		self.SetSizer(self.topSizer)
 		self.Layout()
@@ -89,27 +79,6 @@ class MainPanel(wx.Panel):
 			d = d.lower()
 			exec("temp="+"{"+d+"}")
 			self.wordDict.update(temp)
-
-	def addToggleOptions(self):
-		self.noneRadio = wx.RadioButton(self, id=-1, label="None", style=wx.RB_GROUP)
-		self.hideSyllableImg = wx.RadioButton(self, id=-1, label="Hide characters")
-		self.hideDefinition = wx.RadioButton(self, id=-1, label="Hide definition",)
-
-		self.toggleOptSizer.Add(self.noneRadio, proportion=0, flag=wx.ALL, border=20)
-		self.toggleOptSizer.Add(self.hideSyllableImg, proportion=0, flag=wx.ALL, border=20)
-		self.toggleOptSizer.Add(self.hideDefinition, proportion=0, flag=wx.ALL, border=20)
-
-		self.hideSyllableImg.Bind(wx.EVT_RADIOBUTTON, lambda evt :hideSyllableImgHandler(self, evt) )
-
-		self.hideDefinition.Bind(wx.EVT_RADIOBUTTON, lambda evt :hideDefinitionHandler(self, evt) )
-
-		self.noneRadio.Bind(wx.EVT_RADIOBUTTON, lambda evt :resetToggleOpt(self, evt) )
-
-		tip = "Hide english definition of the world"
-		self.hideDefinition.SetToolTipString(tip)
-
-		tip = "Hide image syllable of the word"
-		self.hideSyllableImg.SetToolTipString(tip)
 
 	def getImage(self, filename):
 		img = wx.Image(filename, wx.BITMAP_TYPE_PNG).ConvertToBitmap()
@@ -171,16 +140,6 @@ class MainPanel(wx.Panel):
 		self.inputTxt.SetFocus()
 
 		self.inputTxtSizer.Add(self.inputTxt, proportion=0, flag=wx.ALL, border=25)
-
-	def addClickableOptions(self):
-		self.statsButton = wx.Button(self, label="View Statistics")
-		self.changeDict = wx.Button(self, label="Change dictionary")
-
-		self.clickableOptSizer.Add(self.statsButton ,proportion=0, flag=wx.ALL, border=20)
-		self.clickableOptSizer.Add(self.changeDict,proportion=0, flag=wx.ALL, border=20)
-
-		self.statsButton.Bind(wx.EVT_BUTTON, statsBtnHandler)
-		self.changeDict.Bind(wx.EVT_BUTTON, lambda evt :changesDictBtnHandler(self, evt))
 
 
 class MainFrame(wx.Frame):
