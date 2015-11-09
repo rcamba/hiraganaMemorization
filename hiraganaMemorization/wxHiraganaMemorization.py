@@ -147,9 +147,17 @@ class MainFrame(wx.Frame):
 		self.WindowSize = (1175,400)
 		wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title="Hiragana Memorization", size=self.WindowSize, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER ^ wx.MAXIMIZE_BOX)#use default frame style but disable border resize and maximize
 
+		self.addMenuBar()
+
 		self.mp = MainPanel(self)
 		self.Center()
 		self.Show()
+
+	def addMenuBar(self):
+		self.menuBar = wx.MenuBar()
+		self.gameOptionsMenu = wx.Menu()
+		self.menuBar.Append(self.gameOptionsMenu, "Game Op&tions")
+		self.SetMenuBar(self.menuBar)
 
 
 if __name__ == "__main__":
