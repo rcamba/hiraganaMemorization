@@ -1,7 +1,7 @@
 from ConfigParser import RawConfigParser
 from os import path
 import wx
-from evtHandler import statsBtnHandler, changesDictBtnHandler, resetToggleOpt, hideDefinitionHandler, hideSyllableImgHandler, handleClickInputBox, handleInput
+from evtHandler import statsBtnHandler, changeDictHandler, resetToggleOpt, hideDefinitionHandler, hideSyllableImgHandler, handleClickInputBox, handleInput
 from ChangeDictFrame import ChangeDictFrame
 from random import choice as randChoice
 
@@ -148,12 +148,14 @@ class MainFrame(wx.Frame):
 		wx.Frame.__init__(self, parent=None, id=wx.ID_ANY, title="Hiragana Memorization", size=self.WindowSize, style=wx.DEFAULT_FRAME_STYLE ^ wx.RESIZE_BORDER ^ wx.MAXIMIZE_BOX)#use default frame style but disable border resize and maximize
 
 		self.HIDE_DEFINITION_ID = 1
+		self.CHANGE_DICT_ID = 2
 
 		self.mp = MainPanel(self)
 
 		self.addMenuBar()
 		self.addHideDefOption()
 		self.gameOptionsMenu.AppendSeparator()
+		self.addChangeDictOption()
 
 		self.Center()
 		self.Show()
@@ -165,11 +167,15 @@ class MainFrame(wx.Frame):
 		self.SetMenuBar(self.menuBar)
 
 	def addHideDefOption(self):
-		self.hideDefinitionMenuItem = wx.MenuItem(self.gameOptionsMenu, self.HIDE_DEFINITION_ID, "Hide &definition\tCTRL+D", kind=wx.ITEM_CHECK)
+		self.hideDefinitionMenuItem = wx.MenuItem(self.gameOptionsMenu, self.HIDE_DEFINITION_ID, "Hide de&finition\tCtrl+F", kind=wx.ITEM_CHECK)
 		self.gameOptionsMenu.AppendItem(self.hideDefinitionMenuItem)
 		self.hideDefinitionMenuItem.Check(False)
 		self.Bind(wx.EVT_MENU, lambda evt: hideDefinitionHandler(self, self.mp), id=self.HIDE_DEFINITION_ID)
 
+	def addChangeDictOption(self):
+		self.changeDictMenuItem = wx.MenuItem(self.gameOptionsMenu, self.CHANGE_DICT_ID, "Change &dictionary\tCtrl+D")
+		self.gameOptionsMenu.AppendItem(self.changeDictMenuItem)
+		self.Bind(wx.EVT_MENU, lambda evt: changeDictHandler(self.mp), id=self.CHANGE_DICT_ID)
 
 if __name__ == "__main__":
 	app = wx.App(False)
