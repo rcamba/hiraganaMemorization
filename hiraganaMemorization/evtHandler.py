@@ -86,13 +86,13 @@ def resetToggleOpt(self, evt, resetTargs=["def","sylImg"]):
 
 def hideDefinitionHandler(frame, panel):
 
-	if frame.hide_definition_menu_item.IsChecked():
-		frame.hide_definition_menu_item.Check()
+	if frame.hideDefinitionMenuItem.IsChecked():
+		frame.hideDefinitionMenuItem.Check()
 		panel.currWordLabel.Hide()
 		panel.prevWordLabel.Hide()
 
 	else:
-		frame.hide_definition_menu_item.Check(False)
+		frame.hideDefinitionMenuItem.Check(False)
 		panel.currWordLabel.Show()
 		panel.prevWordLabel.Show()
 

@@ -153,6 +153,7 @@ class MainFrame(wx.Frame):
 
 		self.addMenuBar()
 		self.addHideDefOption()
+		self.gameOptionsMenu.AppendSeparator()
 
 		self.Center()
 		self.Show()
@@ -164,9 +165,9 @@ class MainFrame(wx.Frame):
 		self.SetMenuBar(self.menuBar)
 
 	def addHideDefOption(self):
-		self.hide_definition_menu_item = wx.MenuItem(self.gameOptionsMenu, self.HIDE_DEFINITION_ID, "Hide &definition\tCTRL+D", kind=wx.ITEM_CHECK)
-		self.gameOptionsMenu.AppendItem(self.hide_definition_menu_item)
-		self.hide_definition_menu_item.Check(False)
+		self.hideDefinitionMenuItem = wx.MenuItem(self.gameOptionsMenu, self.HIDE_DEFINITION_ID, "Hide &definition\tCTRL+D", kind=wx.ITEM_CHECK)
+		self.gameOptionsMenu.AppendItem(self.hideDefinitionMenuItem)
+		self.hideDefinitionMenuItem.Check(False)
 		self.Bind(wx.EVT_MENU, lambda evt: hideDefinitionHandler(self, self.mp), id=self.HIDE_DEFINITION_ID)
 
 
