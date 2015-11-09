@@ -1,14 +1,15 @@
 import wx
 from evtHandler import unused_sb_handler, unused_dlb_handler, curr_sb_handler, curr_dlb_handler, insertDictHandler, removeDictHandler
 
+
 class ChangeDictPanel(wx.Panel):
 
 	def __init__(self, parent, unusedDicts=[], currDicts=[]):
-		self.parent=parent
-		self.WindowSize=(400,600)
-		self.LIST_BOX_SIZE=(100,200)
-		self.LABEL_FONT_SIZE=12
-		self.WX_FONT=wx.Font(self.LABEL_FONT_SIZE, wx.DEFAULT, wx.NORMAL, wx.NORMAL)
+		self.parent = parent
+		self.WindowSize = (400,600)
+		self.LIST_BOX_SIZE = (100,200)
+		self.LABEL_FONT_SIZE = 12
+		self.WX_FONT = wx.Font(self.LABEL_FONT_SIZE, wx.DEFAULT, wx.NORMAL, wx.NORMAL)
 
 		wx.Panel.__init__(self, parent)
 
@@ -20,7 +21,7 @@ class ChangeDictPanel(wx.Panel):
 		self.currDictSizer = wx.BoxSizer(wx.VERTICAL)
 		self.closeBtnSizer = wx.BoxSizer(wx.VERTICAL)
 
-		self.currDicts=currDicts
+		self.currDicts = currDicts
 		self.unusedDicts = unusedDicts
 
 		self.addUnusedDictsLabel()
@@ -50,20 +51,20 @@ class ChangeDictPanel(wx.Panel):
 
 	def addUnusedDictsLabel(self):
 
-		self.unused_dict_label=wx.StaticText(self, label="Unused")
+		self.unused_dict_label = wx.StaticText(self, label="Unused")
 		self.unused_dict_label.SetFont(self.WX_FONT)
 		self.unusedDictSizer.Add(self.unused_dict_label, flag=wx.ALIGN_CENTER)
 
 	def addUnusedDictsSearchBar(self):
 
-		self.unused_dict_search_bar=wx.TextCtrl(self)
+		self.unused_dict_search_bar = wx.TextCtrl(self)
 		self.unused_dict_search_bar.Bind(wx.EVT_TEXT, lambda evt :unused_sb_handler(self, evt) )
 
 		self.unusedDictSizer.Add(self.unused_dict_search_bar, flag=wx.ALIGN_CENTER)
 
 	def addUnusedDictListBox(self):
 
-		self.unused_dict_box=wx.ListBox(self, choices=self.unusedDicts, size=self.LIST_BOX_SIZE, style=wx.LB_EXTENDED)
+		self.unused_dict_box = wx.ListBox(self, choices=self.unusedDicts, size=self.LIST_BOX_SIZE, style = wx.LB_EXTENDED)
 
 		self.unused_dict_box.Bind(wx.EVT_LISTBOX, lambda evt :unused_dlb_handler(self, evt))
 		self.unused_dict_box.Bind(wx.EVT_LISTBOX_DCLICK, lambda evt :insertDictHandler(self, evt))
@@ -71,9 +72,8 @@ class ChangeDictPanel(wx.Panel):
 		self.unusedDictSizer.Add(self.unused_dict_box, flag=wx.ALIGN_CENTER)
 
 	def addInsertRemoveButtons(self):
-
-		self.insertDictBtn=wx.Button(self, label=">>")
-		self.removeDictBtn=wx.Button(self, label="<<")
+		self.insertDictBtn = wx.Button(self, label=">>")
+		self.removeDictBtn = wx.Button(self, label="<<")
 
 		self.midButtonSizer.Add(self.insertDictBtn, flag=wx.ALIGN_CENTER | wx.EXPAND)
 		self.midButtonSizer.Add(self.removeDictBtn, flag=wx.ALIGN_CENTER | wx.EXPAND)
@@ -82,20 +82,17 @@ class ChangeDictPanel(wx.Panel):
 		self.insertDictBtn.Bind(wx.EVT_BUTTON, lambda evt :insertDictHandler(self, evt))
 
 	def addCurrDictLabel(self):
-
-		self.curr_dict_label=wx.StaticText(self, label="Current")
+		self.curr_dict_label = wx.StaticText(self, label="Current")
 		self.curr_dict_label.SetFont(self.WX_FONT)
 		self.currDictSizer.Add(self.curr_dict_label, flag=wx.ALIGN_CENTER)
 
 	def addCurDictSearchBar(self):
-
-		self.curr_dict_search_bar=wx.TextCtrl(self)
+		self.curr_dict_search_bar = wx.TextCtrl(self)
 		self.curr_dict_search_bar.Bind(wx.EVT_TEXT, lambda evt : curr_sb_handler(self, evt) )
 
 		self.currDictSizer.Add(self.curr_dict_search_bar, flag=wx.ALIGN_CENTER)
 
 	def addCurrDictListBox(self):
-
 		self.curr_dict_box=wx.ListBox(self, choices=self.currDicts, size=self.LIST_BOX_SIZE, style=wx.LB_EXTENDED)
 
 		self.curr_dict_box.Bind(wx.EVT_LISTBOX, lambda evt :curr_dlb_handler(self, evt))
@@ -104,7 +101,6 @@ class ChangeDictPanel(wx.Panel):
 		self.currDictSizer.Add(self.curr_dict_box, flag=wx.ALIGN_CENTER)
 
 	def addCloseBtn(self):
-
 		self.closeBtn=wx.Button(self, label="Close")
 		self.closeBtn.Bind(wx.EVT_BUTTON, lambda evt :self.parent.closeChangeDict(evt))
 
@@ -116,7 +112,6 @@ class ChangeDictFrame(wx.Frame):
 	def __init__(self, parent=None, unusedDicts=[], currDicts=[]):
 		self.parent=parent
 		self.WindowSize=(400,600)
-
 
 		wx.Frame.__init__(self, parent, title="Change dictionary", size=self.WindowSize)
 
