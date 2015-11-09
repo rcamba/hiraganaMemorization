@@ -84,13 +84,19 @@ def resetToggleOpt(self, evt, resetTargs=["def","sylImg"]):
 		self.hideSyllableImgFlag=False
 
 
-def hideDefinitionHandler(self, evt):
-	resetToggleOpt(self, evt, ["sylImg"])
-	if evt.GetEventObject().GetValue():
-		self.currWordLabel.Hide()
-		self.prevWordLabel.Hide()
-		self.Layout()
+def hideDefinitionHandler(frame, panel):
 
+	if frame.hide_definition_menu_item.IsChecked():
+		frame.hide_definition_menu_item.Check()
+		panel.currWordLabel.Hide()
+		panel.prevWordLabel.Hide()
+
+	else:
+		frame.hide_definition_menu_item.Check(False)
+		panel.currWordLabel.Show()
+		panel.prevWordLabel.Show()
+
+	panel.Layout()
 
 def hideSyllableImgHandler(self, evt):
 	resetToggleOpt(self, evt, ["def"])
