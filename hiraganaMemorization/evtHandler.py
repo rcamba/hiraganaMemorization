@@ -64,11 +64,10 @@ def unused_sb_handler(self, evt):
 def statsBtnHandler(evt):
 	print "Stats button"
 
-def changesDictBtnHandler(self, evt):
-	print "Change dict!"
-	self.cdf.unused_dict_search_bar.SetValue("")
-	self.cdf.Center()
-	self.cdf.Show()
+def changeDictHandler(panel):
+	panel.cdf.unused_dict_search_bar.SetValue("")
+	panel.cdf.Center()
+	panel.cdf.Show()
 
 
 def resetToggleOpt(self, evt, resetTargs=["def","sylImg"]):
@@ -85,7 +84,6 @@ def resetToggleOpt(self, evt, resetTargs=["def","sylImg"]):
 
 
 def hideDefinitionHandler(frame, panel):
-
 	if frame.hideDefinitionMenuItem.IsChecked():
 		frame.hideDefinitionMenuItem.Check()
 		panel.currWordLabel.Hide()
