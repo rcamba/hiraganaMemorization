@@ -139,7 +139,7 @@ def nextPrevImgBox(self, evt):
 	[img.Destroy() for img in self.prevImgHolder]
 	self.prevImgHolder=[]
 
-	self.drawWord(fileList, self.prevImgSizer, self.prevImgHolder, hidden=True)
+	self.drawWord(fileList, self.prevImgSizer, self.prevImgHolder)
 
 
 def nextCurrImgBox(self, evt):
@@ -156,7 +156,7 @@ def nextCurrImgBox(self, evt):
 		[img.Destroy() for img in self.currImgHolder]
 		self.currImgHolder=[]
 
-		self.drawWord(fileList, self.currImgSizer, self.currImgHolder, hidden=True)
+		self.drawWord(fileList, self.currImgSizer, self.currImgHolder)
 
 	else:
 		[img.Hide() for img in self.prevImgHolder]

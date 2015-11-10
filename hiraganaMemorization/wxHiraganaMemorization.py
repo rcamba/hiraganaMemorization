@@ -40,7 +40,6 @@ class MainPanel(wx.Panel):
 		self.prevImgHolder = []
 
 		self.loadSymDicts()
-		self.hideSyllableImgFlag = False
 
 		self.topSizer = wx.BoxSizer(wx.HORIZONTAL)
 
@@ -112,7 +111,7 @@ class MainPanel(wx.Panel):
 		imgRes = wx.StaticBitmap(self, -1, img, (img.GetWidth(), img.GetHeight()))
 		return imgRes
 
-	def drawWord(self, fileList, targSizer, storage, hidden=False):
+	def drawWord(self, fileList, targSizer, storage):
 		"""
 		places images of syllables in to targSizer (prevImgSizer or currImgSizer)
 
@@ -124,13 +123,11 @@ class MainPanel(wx.Panel):
 
 		for f in fileList:
 			imgObj = self.getImage(path.join(self.symImgPath,f))
-			if hidden:
-				imgObj.Hide()
+			imgObj.Hide()  #hide all images until they are all ready to be shown
 			storage.append(imgObj)
 			targSizer.Add(imgObj, proportion=0, flag=wx.ALL, border=0)
 
-		if self.hideSyllableImgFlag is False:
-			[img.Show() for img in storage]
+		[img.Show() for img in storage]  #show all images once they have all been made
 
 		self.imgBoxSizer.Layout()
 		self.Layout()
@@ -301,6 +298,7 @@ class MainFrame(wx.Frame):
 		self.resetStatsMenuItem = wx.MenuItem(self.statisticsMenu, self.RESET_STATS_ID, "Reset stats")
 		self.statisticsMenu.AppendItem(self.resetStatsMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.RESET_STATS_ID)
+
 
 if __name__ == "__main__":
 	app = wx.App(False)
