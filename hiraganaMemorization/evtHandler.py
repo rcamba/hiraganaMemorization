@@ -200,9 +200,9 @@ def generateCorrectAns(currWord):
 		"ta-be-ma-su"
 		answer: "tabemasu"
 
-	the special case that this method handles is the soukon for repeating consonants
+	the special case that this method handles is the sokuon for repeating consonants
 	e.g:
-		ke-soukon-ko-n
+		ke-sokuon-ko-n
 		answer: "kekkon"
 
 	argument:
@@ -216,11 +216,11 @@ def generateCorrectAns(currWord):
 	tokens = currWord.split('-')
 	for i in range(0,len(tokens)):
 
-		if tokens[i] == "minitsu":
+		if tokens[i] == "sokuon":
 			if i<len(tokens)-1 and tokens[i+1][0] not in vowels:
 				correctAns = correctAns+tokens[i+1][0]
 			else:
-				raise ValueError("Last syllable can't be a Sokuon(little tsu) and must not be a vowel" + ". Tokens="+ str(tokens))
+				raise ValueError("Last syllable can't be a sokuon(little tsu) and must not be a vowel" + ". Tokens="+ str(tokens))
 		else:
 			correctAns = correctAns+tokens[i]
 
