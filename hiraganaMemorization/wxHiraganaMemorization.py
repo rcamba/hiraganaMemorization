@@ -71,24 +71,57 @@ class MainPanel(wx.Panel):
 		self.Bind(wx.EVT_CLOSE, self.closeHandler)
 		self.cdf.Hide()
 
-	def closeHandler(self,evt=None):
+	def closeHandler(self, evt=None):
+		"""
+		Method bound to closing event
+
+		argument:
+			evt -- generated event when this function is called by an event handler
+
+		Destroys the parent - MainFrame
+		"""
+
 		self.parent.Destroy()
 
 	def loadSymDicts(self):
+		"""
+		Load all dictionaries (from self.currDicts) in to self.wordDict
+		self.currDicts contains the name of the dictionary files which is used to construct the full file path by joining the name with self.symDictPath
+		"""
+
 		temp = {}
 		self.wordDict = {}
 		for file in self.currDicts:
-			d = open( path.join(self.symDictPath,file) ).read().replace("\n","")
+			d = open(path.join(self.symDictPath, file)).read().replace("\n", "")
 			d = d.lower()
 			exec("temp="+"{"+d+"}")
 			self.wordDict.update(temp)
 
 	def getImage(self, filename):
+		"""
+		uses given filename argument to to create a bitmap image
+		bitmap image is then used to create StaticBitmap
+
+		args:
+			filename -- the filename of the image
+
+		returns StaticBitmap image for given filename
+		"""
+
 		img = wx.Image(filename, wx.BITMAP_TYPE_PNG).ConvertToBitmap()
 		imgRes = wx.StaticBitmap(self, -1, img, (img.GetWidth(), img.GetHeight()))
 		return imgRes
 
 	def drawWord(self, fileList, targSizer, storage, hidden=False):
+		"""
+		places images of syllables in to targSizer (prevImgSizer or currImgSizer)
+
+		arguments:
+			fileList -- list of files containing the syllables used to produce a word
+			targSizer -- the sizer to add the images in to
+			storage -- a list that holds the image objects themselves to prevent them from being garbage collected
+		"""
+
 		for f in fileList:
 			imgObj = self.getImage(path.join(self.symImgPath,f))
 			if hidden:
@@ -103,9 +136,27 @@ class MainPanel(wx.Panel):
 		self.Layout()
 
 	def fileListForWord(self, word):
+		"""
+		create syllables by splitting the word and then create the filenames for the syllables
+		e.g:
+			word = "ta-be-ma-su"
+			syllables = [ta, be, ma, su]
+			list of filenames = [ta.png, be.png, ma.png, su.png]
+
+		arguments:
+			word -- the word to be used to create syllables from
+
+		returns a list of filenames for each syllable to construct the given word
+		"""
 		return [syllable.capitalize()+".png" for syllable in word.split('-')]
 
 	def addCurrImgBox(self):
+		"""
+		create the container that will hold the current word/image of syllables
+		the chosen starting word is initalized by random selection from self.wordDict
+		create sylabble images for the word and add them to the self.currImgSizer which will display the images
+		"""
+
 		self.currWord = randChoice(self.wordDict.keys())
 		self.definition = self.wordDict[self.currWord]
 		self.wordDict.pop(self.currWord)
@@ -122,6 +173,10 @@ class MainPanel(wx.Panel):
 		self.currImgNLabelSizer.Add(self.currWordLabel, flag=wx.ALIGN_CENTRE)
 
 	def addPrevImgBox(self):
+		"""
+		create the container that will hold the previous word/image of syllables after the user enters their first input
+		"""
+
 		self.prevWordLabel = wx.StaticText(self)
 		self.prevWordLabel.SetFont(self.img_box_font)
 
@@ -131,6 +186,10 @@ class MainPanel(wx.Panel):
 		self.prevImgNLabelSizer.Add(self.prevImgSizer, flag=wx.ALIGN_CENTRE)
 
 	def addInputTxt(self):
+		"""
+		create the textbox that the user will use to enter their answer
+		"""
+
 		self.inputTxt = wx.TextCtrl(self, size=self.inputTxtSize, style=wx.TE_PROCESS_ENTER)
 		self.inputTxt.SetValue("Enter syllables")
 
@@ -145,7 +204,6 @@ class MainPanel(wx.Panel):
 		self.inputTxtSizer.Add(self.inputTxt, proportion=0, flag=wx.ALL, border=25)
 
 	def displayAlert(self, alertMsg):
-
 		"""
 		Displays warning message as a popup
 
@@ -186,6 +244,10 @@ class MainFrame(wx.Frame):
 		self.Show()
 
 	def addMenuBar(self):
+		"""
+		create the menu bar and menus
+		"""
+
 		self.menuBar = wx.MenuBar()
 		self.gameOptionsMenu = wx.Menu()
 		self.statisticsMenu = wx.Menu()
@@ -194,6 +256,12 @@ class MainFrame(wx.Frame):
 		self.SetMenuBar(self.menuBar)
 
 	def addHideDefOption(self):
+		"""
+		togglable menu bar option for hiding the definition of the word
+		Game Options -> Hide definition
+		Shortcut: Ctrl+F or ALT+T+F
+		"""
+
 		self.hideDefinitionMenuItem = wx.MenuItem(self.gameOptionsMenu, self.HIDE_DEFINITION_ID, "Hide de&finition\tCtrl+F", kind=wx.ITEM_CHECK)
 		self.gameOptionsMenu.AppendItem(self.hideDefinitionMenuItem)
 		self.hideDefinitionMenuItem.Check(False)
@@ -202,11 +270,22 @@ class MainFrame(wx.Frame):
 		self.gameOptionsMenu.AppendSeparator()
 
 	def addChangeDictOption(self):
+		"""
+		menu bar option that launches ChangeDictFrame which allows the user to change which dictionaries they want to use
+		Game Options -> Change dictionary
+		Shortcut: Ctrl+D or ALT+T+D
+		"""
+
 		self.changeDictMenuItem = wx.MenuItem(self.gameOptionsMenu, self.CHANGE_DICT_ID, "Change &dictionary\tCtrl+D")
 		self.gameOptionsMenu.AppendItem(self.changeDictMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: changeDictHandler(self.mp), id=self.CHANGE_DICT_ID)
 
 	def addViewStats(self):
+		"""
+		menu bar option for viewing stats
+		WIP
+		"""
+
 		self.viewStatsMenuItem = wx.MenuItem(self.statisticsMenu, self.VIEW_STATS_ID, "&View stats")
 		self.statisticsMenu.AppendItem(self.viewStatsMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.VIEW_STATS_ID)
@@ -214,6 +293,11 @@ class MainFrame(wx.Frame):
 		self.statisticsMenu.AppendSeparator()
 
 	def addResetStats(self):
+		"""
+		menu bar option for reseting stats
+		WIP
+		"""
+
 		self.resetStatsMenuItem = wx.MenuItem(self.statisticsMenu, self.RESET_STATS_ID, "Reset stats")
 		self.statisticsMenu.AppendItem(self.resetStatsMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.RESET_STATS_ID)
