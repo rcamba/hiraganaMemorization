@@ -145,7 +145,7 @@ class MainPanel(wx.Panel):
 
 		returns a list of filenames for each syllable to construct the given word
 		"""
-		return [syllable.capitalize()+".png" for syllable in word.split('-')]
+		return [syllable.lower()+".png" for syllable in word.split('-')]
 
 	def addCurrImgBox(self):
 		"""
