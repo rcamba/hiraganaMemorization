@@ -1,9 +1,15 @@
 hiraganaMemorization
 ================
 
+About
+-------
+Displays Hiragana characters together to form a word  
+User enters the romaji/pronunciation for the given characters  
+The objective is to help learn both Hiragana characters and some Japanese vocabulary  
+
 Requirements
 ----------------
-Windows, Linux, Mac requires wxPython:
+wxPython available for Windows, Mac, or Linux:
 http://www.wxpython.org/download.php
 
 Installation
@@ -16,9 +22,9 @@ Screenshots
 ![Screenshot 0](hiraganaMemorization/Screenshots/S0.png?raw=true "Screenshot 0")
 ![Screenshot 1](hiraganaMemorization/Screenshots/S1.png?raw=true "Screenshot 1")
 
-WIP:
+Work in progress:
 ------
 Move answer feedback from command line in to program  
 Scoring + statistics  
 More dictionaries and words  
-More native look on Windows platforms (use wx.Panel instead of wx.Frame)  
+Config to keep track of  user settings  
