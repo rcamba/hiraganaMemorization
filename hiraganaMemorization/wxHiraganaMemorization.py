@@ -24,8 +24,8 @@ class MainPanel(wx.Panel):
 		self.symDictPath = path.join(pathToModule,"symDicts")
 		self.symImgPath = path.join(pathToModule,"symImg")
 
-		self.unusedDicts = listdir(self.symDictPath)[1:]
-		self.currDicts = listdir(self.symDictPath)[:1]
+		self.unusedDicts = listdir(self.symDictPath)[:1]
+		self.currDicts = listdir(self.symDictPath)[1:]
 		self.cdf = ChangeDictFrame(self, self.unusedDicts, self.currDicts)
 
 		#self.confParser = RawConfigParser()
