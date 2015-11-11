@@ -227,7 +227,7 @@ class MainFrame(wx.Frame):
 		self.HIDE_DEFINITION_ID = 1
 		self.CHANGE_DICT_ID = 2
 		self.VIEW_STATS_ID = 3
-		self.RESET_STATS_ID = 4
+		self.VIEW_HIRAGANA_CHART_ID = 4
 
 		self.mp = MainPanel(self)
 
@@ -235,7 +235,7 @@ class MainFrame(wx.Frame):
 		self.addHideDefOption()
 		self.addChangeDictOption()
 		self.addViewStats()
-		self.addResetStats()
+		self.addViewHiraganaChart()
 
 		self.Center()
 		self.Show()
@@ -247,9 +247,9 @@ class MainFrame(wx.Frame):
 
 		self.menuBar = wx.MenuBar()
 		self.gameOptionsMenu = wx.Menu()
-		self.statisticsMenu = wx.Menu()
+		self.viewMenu = wx.Menu()
 		self.menuBar.Append(self.gameOptionsMenu, "Game Op&tions")
-		self.menuBar.Append(self.statisticsMenu, "&Statistics")
+		self.menuBar.Append(self.viewMenu, "&View")
 		self.SetMenuBar(self.menuBar)
 
 	def addHideDefOption(self):
@@ -283,21 +283,20 @@ class MainFrame(wx.Frame):
 		WIP
 		"""
 
-		self.viewStatsMenuItem = wx.MenuItem(self.statisticsMenu, self.VIEW_STATS_ID, "&View stats")
-		self.statisticsMenu.AppendItem(self.viewStatsMenuItem)
+		self.viewStatsMenuItem = wx.MenuItem(self.viewMenu, self.VIEW_STATS_ID, "&Statistics")
+		self.viewMenu.AppendItem(self.viewStatsMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.VIEW_STATS_ID)
 
-		self.statisticsMenu.AppendSeparator()
+		self.viewMenu.AppendSeparator()
 
-	def addResetStats(self):
+	def addViewHiraganaChart(self):
 		"""
-		menu bar option for reseting stats
-		WIP
+		menu bar option for viewing hiragana characters
 		"""
 
-		self.resetStatsMenuItem = wx.MenuItem(self.statisticsMenu, self.RESET_STATS_ID, "Reset stats")
-		self.statisticsMenu.AppendItem(self.resetStatsMenuItem)
-		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.RESET_STATS_ID)
+		self.viewHirChartMenuItem = wx.MenuItem(self.viewMenu, self.VIEW_HIRAGANA_CHART_ID, "View &Hiragana Chart")
+		self.viewMenu.AppendItem(self.viewHirChartMenuItem)
+		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.VIEW_HIRAGANA_CHART_ID)
 
 
 if __name__ == "__main__":
