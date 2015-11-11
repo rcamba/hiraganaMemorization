@@ -1,5 +1,5 @@
 from ConfigParser import RawConfigParser
-from os import path
+from os import path, listdir
 
 import wx
 from wx.lib.agw.genericmessagedialog import GenericMessageDialog as GMD
@@ -20,8 +20,12 @@ class MainPanel(wx.Panel):
 		self.parent = parent
 		self.WindowSize = self.parent.WindowSize
 		wx.Panel.__init__(self, parent)
-		self.unusedDicts = ["test"]
-		self.currDicts = ["verbs"]
+
+		self.symDictPath = path.join(pathToModule,"symDicts")
+		self.symImgPath = path.join(pathToModule,"symImg")
+
+		self.unusedDicts = listdir(self.symDictPath)[1:]
+		self.currDicts = listdir(self.symDictPath)[:1]
 		self.cdf = ChangeDictFrame(self, self.unusedDicts, self.currDicts)
 
 		#self.confParser = RawConfigParser()
@@ -29,8 +33,7 @@ class MainPanel(wx.Panel):
 		#self.confParser.read(self.configFile)
 		self.imgBoxSize = (800,100)
 		self.inputTxtSize = (800,32)
-		self.symDictPath = path.join(pathToModule,"symDicts")
-		self.symImgPath = path.join(pathToModule,"symImg")
+
 		self.currWord = ""
 		self.definition = ""
 		self.img_box_font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTWEIGHT_NORMAL, wx.FONTWEIGHT_NORMAL)
