@@ -287,14 +287,13 @@ class MainFrame(wx.Frame):
 		self.viewMenu.AppendItem(self.viewStatsMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.VIEW_STATS_ID)
 
-		self.viewMenu.AppendSeparator()
 
 	def addViewHiraganaChart(self):
 		"""
 		menu bar option for viewing hiragana characters
 		"""
 
-		self.viewHirChartMenuItem = wx.MenuItem(self.viewMenu, self.VIEW_HIRAGANA_CHART_ID, "View &Hiragana Chart")
+		self.viewHirChartMenuItem = wx.MenuItem(self.viewMenu, self.VIEW_HIRAGANA_CHART_ID, "&Hiragana Chart")
 		self.viewMenu.AppendItem(self.viewHirChartMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.VIEW_HIRAGANA_CHART_ID)
 
