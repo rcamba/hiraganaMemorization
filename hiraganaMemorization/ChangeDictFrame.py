@@ -4,8 +4,9 @@ from evtHandler import unused_sb_handler, unused_dlb_handler, curr_sb_handler, c
 
 class ChangeDictPanel(wx.Panel):
 
-	def __init__(self, parent, unusedDicts=[], currDicts=[]):
+	def __init__(self, parent, unusedDicts=[], currDicts=[], grandparent=None):
 		self.parent = parent
+		self.grandparent = grandparent
 		self.WindowSize = (400,600)
 		self.LIST_BOX_SIZE = (100,200)
 		self.LABEL_FONT_SIZE = 12
@@ -115,7 +116,7 @@ class ChangeDictFrame(wx.Frame):
 
 		wx.Frame.__init__(self, parent, title="Change dictionary", size=self.WindowSize)
 
-		self.cdp = ChangeDictPanel(self, unusedDicts, currDicts)
+		self.cdp = ChangeDictPanel(self, unusedDicts, currDicts, parent)
 		self.unused_dict_search_bar = self.cdp.unused_dict_search_bar
 		self.Bind(wx.EVT_CLOSE, self.closeChangeDict)
 

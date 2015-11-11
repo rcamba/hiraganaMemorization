@@ -24,7 +24,7 @@ def insertDictHandler(cdp, evt):
 	cdp.unused_dict_box.Set(cdp.unusedDicts)
 	cdp.curr_dict_box.Set(cdp.currDicts)
 
-	cdp.parent.LAST = False
+	cdp.grandparent.LAST = False
 
 
 def removeDictHandler(cdp, evt):
@@ -48,7 +48,7 @@ def removeDictHandler(cdp, evt):
 	cdp.unused_dict_box.Set(cdp.unusedDicts)
 	cdp.curr_dict_box.Set(cdp.currDicts)
 
-	cdp.parent.LAST=False
+	cdp.grandparent.LAST=False
 
 
 def curr_sb_handler(cdp, evt):
