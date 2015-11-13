@@ -1,5 +1,6 @@
 from ConfigParser import RawConfigParser
 from os import path, listdir
+from string import strip
 
 import wx
 from wx.lib.agw.genericmessagedialog import GenericMessageDialog as GMD
@@ -94,10 +95,10 @@ class MainPanel(wx.Panel):
 		temp = {}
 		self.wordDict = {}
 		for file in self.currDicts:
-			d = open(path.join(self.symDictPath, file)).read().replace("\n", "")
-			d = d.lower()
-			exec("temp="+"{"+d+"}")
-			self.wordDict.update(temp)
+			lineList = open(path.join(self.symDictPath, file)).readlines()
+			for line in lineList:
+				japanesePhoneticWord, englishTranslation = map(strip, line.split(":"))
+				self.wordDict[japanesePhoneticWord] = englishTranslation
 
 	def getImage(self, filename):
 		"""
