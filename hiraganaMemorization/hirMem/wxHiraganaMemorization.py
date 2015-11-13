@@ -1,5 +1,5 @@
 from ConfigParser import RawConfigParser
-from os import path, listdir
+from os import path, listdir, pardir
 from string import strip
 
 import wx
@@ -22,8 +22,8 @@ class MainPanel(wx.Panel):
 		self.WindowSize = self.parent.WindowSize
 		wx.Panel.__init__(self, parent)
 
-		self.symDictPath = path.join(pathToModule,"symDicts")
-		self.symImgPath = path.join(pathToModule,"symImg")
+		self.symDictPath = path.join(pathToModule, pardir, "symDicts")
+		self.symImgPath = path.join(pathToModule, pardir, "symImg")
 
 		self.unusedDicts = listdir(self.symDictPath)[:1]
 		self.currDicts = listdir(self.symDictPath)[1:]
