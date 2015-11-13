@@ -1,8 +1,9 @@
 import unittest
+from os import pardir
 from sys import path
 
-path.append("../")
-from evtHandler import generateCorrectAns
+path.append(pardir)
+from hirMem.evtHandler import generateCorrectAns
 
 
 class TestEvts(unittest.TestCase):
