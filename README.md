@@ -10,12 +10,14 @@ Enter "quit" or "exit" to end the program
 
 Requirements
 ----------------
-wxPython available for Windows, Mac, or Linux:
+wxPython available for Windows, Mac, or Linux:  
 http://www.wxpython.org/download.php
+
+Alternatively if you have pip: `pip install -r requirements.txt`
 
 Installation
 -------------
-None required. Just run launchHiraganaMemorization.py
+No installation required. Only needs wxPython to be installed then just run launchHiraganaMemorization.py
 
 
 Screenshots
