@@ -37,7 +37,7 @@ class MainPanel(wx.Panel):
 
 		self.currWord = ""
 		self.definition = ""
-		self.img_box_font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTWEIGHT_NORMAL, wx.FONTWEIGHT_NORMAL)
+		self.img_box_font = wx.Font(14, wx.FONTFAMILY_DEFAULT, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL)
 		self.LAST = False
 
 		self.currImgHolder = []
@@ -264,7 +264,7 @@ class MainFrame(wx.Frame):
 		"""
 
 		self.hideDefinitionMenuItem = wx.MenuItem(self.gameOptionsMenu, self.HIDE_DEFINITION_ID, "Hide de&finition\tCtrl+F", kind=wx.ITEM_CHECK)
-		self.gameOptionsMenu.AppendItem(self.hideDefinitionMenuItem)
+		self.gameOptionsMenu.Append(self.hideDefinitionMenuItem)
 		self.hideDefinitionMenuItem.Check(False)
 		self.Bind(wx.EVT_MENU, lambda evt: hideDefinitionHandler(self, self.mp), id=self.HIDE_DEFINITION_ID)
 
@@ -278,7 +278,7 @@ class MainFrame(wx.Frame):
 		"""
 
 		self.changeDictMenuItem = wx.MenuItem(self.gameOptionsMenu, self.CHANGE_DICT_ID, "Change &dictionary\tCtrl+D")
-		self.gameOptionsMenu.AppendItem(self.changeDictMenuItem)
+		self.gameOptionsMenu.Append(self.changeDictMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: changeDictHandler(self.mp), id=self.CHANGE_DICT_ID)
 
 	def addViewStats(self):
@@ -288,7 +288,7 @@ class MainFrame(wx.Frame):
 		"""
 
 		self.viewStatsMenuItem = wx.MenuItem(self.viewMenu, self.VIEW_STATS_ID, "&Statistics")
-		self.viewMenu.AppendItem(self.viewStatsMenuItem)
+		self.viewMenu.Append(self.viewStatsMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.VIEW_STATS_ID)
 
 
@@ -298,7 +298,7 @@ class MainFrame(wx.Frame):
 		"""
 
 		self.viewHirChartMenuItem = wx.MenuItem(self.viewMenu, self.VIEW_HIRAGANA_CHART_ID, "&Hiragana Chart")
-		self.viewMenu.AppendItem(self.viewHirChartMenuItem)
+		self.viewMenu.Append(self.viewHirChartMenuItem)
 		self.Bind(wx.EVT_MENU, lambda evt: self.mp.displayAlert("Work in Progress"), id=self.VIEW_HIRAGANA_CHART_ID)
 
 
