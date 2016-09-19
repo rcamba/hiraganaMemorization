@@ -52,7 +52,25 @@ def removeDictHandler(cdp, evt):
 
 
 def curr_sb_handler(cdp, evt):
-	pass
+	if len(evt.GetEventObject().GetValue()) == 0:
+		cdp.curr_dict_search_bar.SetBackgroundColour((255, 255, 255))
+		cdp.curr_dict_search_bar.SetForegroundColour((0, 0, 0))#text color
+
+	else:
+		if evt.GetEventObject().GetValue() in cdp.currDicts:
+			cdp.curr_dict_search_bar.SetBackgroundColour((0, 255, 0))
+			cdp.curr_dict_search_bar.SetForegroundColour((0, 0, 0))#text color
+
+		else:
+			cdp.curr_dict_search_bar.SetBackgroundColour((255, 0, 0))
+			cdp.curr_dict_search_bar.SetForegroundColour((255, 255 ,255))#text color
+
+	item_list = cdp.currDicts
+
+	pattern = re.compile(evt.GetEventObject().GetValue())
+	cdp.curr_dict_box.Set([item  for item in item_list if re.search(pattern, item) is not None])
+
+	cdp.Refresh()
 
 
 def curr_dlb_handler(cdp, evt):
